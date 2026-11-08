@@ -1,122 +1,421 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KaajSathi — আপনার কাজের পাশে</title>
-<style>
-:root {
-  --site-primary: #1769AA;
-  --site-on-primary: #FFFFFF;
-  --site-secondary: #E5F3E9;
-  --site-on-secondary: #174C35;
-  --site-background: #F7FAFC;
-  --site-on-background: #172B3A;
-  --site-font-body: "Noto Sans Bengali", "Hind Siliguri", system-ui, sans-serif;
-  --site-font-heading: "Noto Sans Bengali", "Hind Siliguri", system-ui, sans-serif;
-  --site-heading-scale: 1;
-  --site-spacing-scale: 1;
-  --site-radius-scale: 1;
-  --site-decoration-opacity: 1;
-  --surface: light-dark(#FFFFFF, #18232D);
-  --muted: light-dark(#607382, #B4C2CC);
-  --line: light-dark(#DCE6EC, #344552);
-  --accent: #F29B38;
-  color-scheme: light dark;
-}
-* { box-sizing: border-box; }
-body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
-#app { min-height: 100vh; width: 100%; border-radius: 0; background-color: var(--site-background); overflow: hidden; }
-a { color: inherit; text-decoration: none; }
-button, input, select, textarea { font: inherit; }
-.wrap { width: min(1120px, calc(100% - 40px)); margin: auto; }
-header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--site-background) 92%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
-.nav { min-height: 76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
-.brand { display:flex; align-items:center; gap:10px; font-weight:900; font-size:23px; color:var(--site-primary); letter-spacing:-.7px; }
-.logo { width:52px; height:52px; display:block; flex:0 0 52px; }
-.brand-copy { display:flex; flex-direction:column; line-height:1.15; }
-.brand-copy small { color:var(--muted); font-size:10px; font-weight:600; letter-spacing:0; margin-top:4px; }
-.navlinks { display:flex; align-items:center; gap:26px; color:var(--muted); font-size:14px; }
-.btn { display:inline-flex; align-items:center; justify-content:center; border:0; cursor:pointer; padding:13px 20px; border-radius:14px; background:var(--site-primary); color:white; font-weight:750; transition:transform .18s, opacity .18s; }
-.btn:hover { transform:translateY(-2px); opacity:.92; }
-.btn.alt { background:var(--site-secondary); color:var(--site-on-secondary); }
-.hero { padding:76px 0 68px; position:relative; }
-.hero-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:48px; align-items:center; }
-.kicker { display:inline-flex; align-items:center; gap:8px; padding:8px 13px; border-radius:30px; background:var(--site-secondary); color:var(--site-on-secondary); font-size:13px; font-weight:750; }
-h1 { font-family:var(--site-font-heading); font-size:clamp(38px,5.4vw,64px); line-height:1.2; letter-spacing:-1.5px; margin:20px 0 18px; }
-.grad { color:var(--site-primary); }
-.lead { color:var(--muted); font-size:17px; line-height:1.9; max-width:590px; }
-.actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
-.trust { display:flex; gap:20px; flex-wrap:wrap; margin-top:30px; color:var(--muted); font-size:13px; }
-.trust span:before { content:"✓"; color:#2D9A63; font-weight:900; margin-right:7px; }
-.visual { min-height:390px; background:linear-gradient(145deg,#1769AA,#0E477A); border-radius:32px; padding:30px; color:white; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-.visual:before,.visual:after { content:""; position:absolute; border:1px solid #ffffff35; border-radius:50%; width:300px; height:300px; opacity:var(--site-decoration-opacity); }
-.visual:after { width:420px;height:420px; }
-.phone { z-index:1; width:min(275px,90%); background:#fff; color:#183247; border-radius:27px; padding:20px; box-shadow:0 22px 60px #001d3b55; transform:rotate(3deg); }
-.phone-top { display:flex; justify-content:space-between; align-items:center; font-weight:850; color:#1769AA; }
-.phone h3 { font-size:20px; margin:24px 0 7px; }
-.phone p { color:#718391; font-size:12px; margin:0 0 16px; }
-.service-mini { display:flex; align-items:center; gap:10px; padding:11px; border:1px solid #e6edf1; border-radius:13px; margin:9px 0; font-size:13px; font-weight:700; }
-.mini-icon { width:35px;height:35px;display:grid;place-items:center;background:#e5f3e9;border-radius:10px;font-size:18px; }
-.phone .btn { width:100%; margin-top:12px; padding:11px; font-size:13px; }
-section { padding:70px 0; }
-.section-head { text-align:center; max-width:650px; margin:0 auto 36px; }
-.section-head h2 { font-size:clamp(27px,3.5vw,39px); margin:0 0 12px; }
-.section-head p { color:var(--muted); line-height:1.8; margin:0; }
-.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.card { background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:25px; }
-.card-icon { width:52px;height:52px;border-radius:16px;background:var(--site-secondary);display:grid;place-items:center;font-size:25px;margin-bottom:18px; }
-.card h3 { margin:0 0 8px; font-size:18px; }
-.card p { color:var(--muted); line-height:1.75; font-size:14px; margin:0; }
-.steps { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; counter-reset:step; }
-.step { padding:24px; border-radius:20px; background:var(--site-secondary); color:var(--site-on-secondary); }
-.step b { display:block; font-size:13px; opacity:.7; margin-bottom:12px; }
-.step h3 { margin:0 0 8px; }
-.step p { margin:0; font-size:14px; line-height:1.7; opacity:.8; }
-.request { background:var(--surface); border:1px solid var(--line); border-radius:26px; padding:30px; max-width:760px; margin:auto; }
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-.field { display:flex; flex-direction:column; gap:7px; }
-.field.full { grid-column:1/-1; }
-label { font-size:13px; font-weight:750; }
-input,select,textarea { width:100%; padding:13px 14px; border:1px solid var(--line); border-radius:12px; background:var(--site-background); color:var(--site-on-background); outline:none; }
-input:focus,select:focus,textarea:focus { border-color:var(--site-primary); }
-textarea { min-height:90px; resize:vertical; }
-.notice { font-size:12px; color:var(--muted); line-height:1.6; margin:14px 0; }
-#formMsg { display:none; margin-top:14px; padding:13px; border-radius:12px; background:var(--site-secondary); color:var(--site-on-secondary); font-size:14px; }
-.cta { background:var(--site-primary); color:white; border-radius:28px; padding:42px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-.cta h2 { margin:0 0 8px; font-size:clamp(25px,3vw,34px); }
-.cta p { margin:0; opacity:.82; }
-.cta .btn { background:white; color:#1769AA; white-space:nowrap; }
-footer { padding:35px 0; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
-.footer-row { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
-@media(max-width:800px) { .navlinks { display:none; } .hero-grid { grid-template-columns:1fr; gap:30px; } .hero { padding:52px 0; } .visual { min-height:340px; } .cards,.steps { grid-template-columns:1fr 1fr; } }
-@media(max-width:560px) { .wrap { width:min(100% - 30px,1120px); } .cards,.steps,.form-grid { grid-template-columns:1fr; } .field.full { grid-column:auto; } section { padding:52px 0; } .cta { padding:28px; align-items:flex-start; flex-direction:column; } .nav { min-height:66px; } .brand { font-size:20px; } }
-.brand .logo{width:54px;height:54px;object-fit:contain;display:block;flex:0 0 54px;border-radius:50%;}
-@media(max-width:600px){.brand .logo{width:46px;height:46px;flex-basis:46px;}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1769AA">
+  <title>KaajSathi — আপনার কাজের পাশে | Local Assistance</title>
+  <meta name="description" content="KaajSathi connects you with local assistance for queue support, shopping, errands and everyday personal tasks. আপনার দৈনন্দিন কাজে স্থানীয় সহায়তা পান।">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://kaajsathi.in/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KaajSathi">
+  <meta property="og:title" content="KaajSathi — Your Everyday Help, Made Simple">
+  <meta property="og:description" content="Local assistance for everyday tasks. দৈনন্দিন কাজে স্থানীয় সহায়তা।">
+  <meta property="og:url" content="https://kaajsathi.in/">
+  <meta property="og:locale" content="bn_IN">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "KaajSathi",
+    "url": "https://kaajsathi.in/",
+    "description": "Local assistance for queue support, shopping, errands and everyday personal tasks."
+  }
+  </script>
+  <style>
+    :root {
+      --blue: #1769AA;
+      --blue-dark: #104D80;
+      --blue-soft: #EAF4FC;
+      --green: #25845A;
+      --green-soft: #EAF6EF;
+      --orange: #F29B38;
+      --ink: #172B3A;
+      --muted: #607382;
+      --line: #DCE6EC;
+      --surface: #FFFFFF;
+      --page: #F7FAFC;
+      --shadow: 0 18px 48px rgba(25, 65, 96, .10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body { margin: 0; color: var(--ink); background: var(--page); font-family: "Noto Sans Bengali", "Hind Siliguri", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .topline { background: var(--blue-dark); color: #fff; font-size: 12px; padding: 7px 0; }
+    .topline-inner { display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    .topline strong { color: #fff; font-weight: 700; }
+    header { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.94); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .brand img { width: 52px; height: 52px; object-fit: contain; border-radius: 50%; }
+    .brand-name { color: var(--blue); font-size: 23px; line-height: 1.05; font-weight: 900; letter-spacing: -.7px; }
+    .brand-tag { display: block; margin-top: 4px; font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0; }
+    .navlinks { display: flex; align-items: center; gap: 25px; font-size: 14px; color: #526777; font-weight: 650; }
+    .navlinks a:hover { color: var(--blue); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .lang-switch { display: inline-flex; padding: 4px; background: #F0F5F8; border: 1px solid var(--line); border-radius: 999px; gap: 2px; }
+    .lang-switch button { border: 0; background: transparent; border-radius: 999px; padding: 7px 11px; color: #526777; cursor: pointer; font-size: 12px; font-weight: 800; }
+    .lang-switch button[aria-pressed="true"] { background: var(--blue); color: white; box-shadow: 0 2px 7px rgba(23,105,170,.24); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 19px; border-radius: 13px; border: 1px solid var(--blue); background: var(--blue); color: #fff; font-weight: 800; font-size: 14px; cursor: pointer; transition: transform .18s, background .18s, box-shadow .18s; }
+    .btn:hover { transform: translateY(-2px); background: var(--blue-dark); box-shadow: 0 8px 20px rgba(23,105,170,.18); }
+    .btn.secondary { background: #fff; color: var(--blue); border-color: #C9DDEC; }
+    .btn.secondary:hover { background: var(--blue-soft); box-shadow: none; }
+    .btn.green { background: var(--green); border-color: var(--green); }
+    .menu-toggle { display: none; border: 1px solid var(--line); border-radius: 11px; background: #fff; color: var(--ink); width: 42px; height: 42px; font-size: 21px; cursor: pointer; }
+    .mobile-menu { display: none; padding: 0 20px 18px; border-top: 1px solid var(--line); background: #fff; }
+    .mobile-menu.open { display: grid; gap: 3px; }
+    .mobile-menu a { padding: 11px 4px; color: #526777; font-weight: 700; }
+    .hero { overflow: hidden; position: relative; padding: 76px 0 68px; background: radial-gradient(circle at 88% 16%, #DDEFFA 0, transparent 28%), linear-gradient(120deg, #F5FAFE 0%, #F7FAFC 65%, #EEF7F1 100%); }
+    .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 55px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border-radius: 999px; background: var(--green-soft); color: #216C4A; font-size: 13px; font-weight: 800; }
+    h1 { max-width: 680px; margin: 20px 0 17px; font-size: clamp(38px, 5.2vw, 62px); line-height: 1.18; letter-spacing: -1.6px; }
+    h1 span { color: var(--blue); }
+    .hero-copy { max-width: 590px; color: #5B7080; font-size: 17px; line-height: 1.9; margin: 0; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 27px; }
+    .proof-points { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 27px; color: #536A79; font-size: 12px; font-weight: 700; }
+    .proof-points span:before { content: "✓"; color: var(--green); font-weight: 900; margin-right: 7px; }
+    .hero-art { min-height: 410px; border-radius: 30px; padding: 30px; display: grid; place-items: center; position: relative; overflow: hidden; background: linear-gradient(145deg, #1769AA, #104D80); box-shadow: 0 25px 60px rgba(16,77,128,.20); }
+    .hero-art:before, .hero-art:after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.18); width: 350px; height: 350px; border-radius: 50%; }
+    .hero-art:after { width: 470px; height: 470px; }
+    .task-panel { position: relative; z-index: 1; width: min(330px, 100%); background: #fff; border-radius: 24px; padding: 23px; color: var(--ink); transform: rotate(1.2deg); box-shadow: 0 24px 55px rgba(0,20,43,.28); }
+    .panel-top { display: flex; justify-content: space-between; align-items: center; color: var(--blue); font-size: 13px; font-weight: 900; }
+    .panel-status { font-size: 10px; background: var(--green-soft); color: var(--green); padding: 5px 8px; border-radius: 999px; }
+    .task-panel h3 { margin: 22px 0 5px; font-size: 20px; }
+    .task-panel > p { margin: 0 0 15px; color: var(--muted); font-size: 12px; }
+    .task-row { display: flex; align-items: center; gap: 11px; padding: 11px; margin: 9px 0; border: 1px solid #E7EEF2; border-radius: 13px; font-size: 13px; font-weight: 750; }
+    .task-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: var(--blue-soft); font-size: 18px; }
+    .task-panel .btn { margin-top: 13px; width: 100%; padding: 11px; font-size: 13px; }
+    section { padding: 76px 0; }
+    .section-head { text-align: center; max-width: 710px; margin: 0 auto 38px; }
+    .section-label { color: var(--green); text-transform: uppercase; letter-spacing: 1.1px; font-size: 11px; font-weight: 900; margin-bottom: 8px; }
+    .section-head h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.25; margin: 0 0 12px; letter-spacing: -.7px; }
+    .section-head p { margin: 0; color: var(--muted); line-height: 1.85; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .service-card { padding: 25px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 18px rgba(25,65,96,.035); transition: transform .18s, box-shadow .18s; }
+    .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .service-icon { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; background: var(--blue-soft); font-size: 25px; margin-bottom: 18px; }
+    .service-card h3 { margin: 0 0 8px; font-size: 18px; }
+    .service-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .service-card a { display: inline-flex; margin-top: 17px; color: var(--blue); font-size: 13px; font-weight: 850; }
+    .service-card a span { margin-left: 6px; }
+    .how-section { background: #EEF5F9; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .step-card { padding: 25px; border: 1px solid #DCE9F0; background: #fff; border-radius: 20px; }
+    .step-number { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; color: #fff; background: var(--blue); font-weight: 900; margin-bottom: 18px; }
+    .step-card h3 { margin: 0 0 8px; font-size: 18px; }
+    .step-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .why-card { padding: 23px; border-radius: 18px; background: #fff; border: 1px solid var(--line); }
+    .why-card .why-icon { font-size: 22px; margin-bottom: 12px; }
+    .why-card h3 { margin: 0 0 7px; font-size: 16px; }
+    .why-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .notice-band { margin-top: 26px; padding: 17px 19px; border-radius: 15px; background: #FFF7E9; border: 1px solid #F6E2BE; color: #75501D; font-size: 13px; line-height: 1.8; }
+    .request-section { background: linear-gradient(180deg, #F7FAFC, #EFF6FA); }
+    .request-card { max-width: 850px; margin: 0 auto; padding: 32px; background: #fff; border: 1px solid var(--line); border-radius: 25px; box-shadow: var(--shadow); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    label { color: #314B5D; font-size: 13px; font-weight: 800; }
+    input, select, textarea { width: 100%; padding: 13px 14px; border: 1px solid #D7E2E9; border-radius: 12px; background: #FBFDFE; color: var(--ink); outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(23,105,170,.10); }
+    textarea { min-height: 100px; resize: vertical; }
+    .form-note { color: var(--muted); font-size: 12px; line-height: 1.75; margin: 17px 0; }
+    .form-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .form-result { display: none; margin-top: 18px; padding: 17px; border: 1px solid #B9DEC9; border-radius: 14px; background: #F0FAF3; color: #215C3B; }
+    .form-result.show { display: block; }
+    .form-result pre { white-space: pre-wrap; word-break: break-word; font: inherit; font-size: 13px; line-height: 1.7; margin: 10px 0; color: #264C37; }
+    .faq-list { max-width: 850px; margin: auto; display: grid; gap: 11px; }
+    details { border: 1px solid var(--line); border-radius: 15px; background: #fff; padding: 17px 19px; }
+    summary { cursor: pointer; font-size: 14px; font-weight: 850; }
+    details p { margin: 11px 0 0; color: var(--muted); font-size: 13px; line-height: 1.85; }
+    .final-cta { padding: 43px; border-radius: 26px; background: linear-gradient(125deg, #1769AA, #104D80); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+    .final-cta h2 { font-size: clamp(24px, 3vw, 34px); margin: 0 0 8px; line-height: 1.3; }
+    .final-cta p { margin: 0; color: rgba(255,255,255,.82); }
+    .final-cta .btn { background: #fff; color: var(--blue-dark); border-color: #fff; white-space: nowrap; }
+    footer { background: #102E46; color: #D4E1EA; padding: 42px 0 22px; }
+    .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 30px; padding-bottom: 28px; }
+    .footer-brand { font-size: 21px; font-weight: 900; color: #fff; }
+    .footer-copy { max-width: 340px; color: #B8C9D5; font-size: 13px; line-height: 1.8; margin-top: 9px; }
+    .footer-title { color: #fff; font-size: 13px; font-weight: 850; margin: 2px 0 12px; }
+    .footer-links { display: grid; gap: 9px; font-size: 13px; color: #C3D1DB; }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.14); padding-top: 17px; color: #AFC1CF; font-size: 11px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 900px) { .navlinks { gap: 15px; } .navlinks a { font-size: 12px; } .nav .btn { padding: 11px 13px; } .hero-grid { gap: 28px; } .hero-art { min-height: 380px; } }
+    @media (max-width: 760px) { .topline-inner { justify-content: center; text-align: center; } .topline-inner span:last-child { display: none; } .nav { min-height: 70px; } .navlinks, .nav-actions > .btn { display: none; } .menu-toggle { display: inline-grid; place-items: center; } .nav-actions { gap: 8px; } .hero { padding: 50px 0; } .hero-grid { grid-template-columns: 1fr; } .hero-art { min-height: 345px; } .services-grid, .steps, .why-grid { grid-template-columns: 1fr 1fr; } section { padding: 58px 0; } .footer-grid { grid-template-columns: 1fr 1fr; } .footer-grid > div:first-child { grid-column: 1 / -1; } }
+    @media (max-width: 540px) { .container { width: min(100% - 30px, 1160px); } .brand img { width: 45px; height: 45px; } .brand-name { font-size: 20px; } .brand-tag { font-size: 9px; } .hero h1 { font-size: 39px; } .hero-copy { font-size: 15px; } .hero-actions .btn { flex: 1 1 100%; } .proof-points { gap: 10px 14px; } .hero-art { min-height: 325px; padding: 18px; border-radius: 23px; } .services-grid, .steps, .why-grid, .form-grid, .footer-grid { grid-template-columns: 1fr; } .field.full, .footer-grid > div:first-child { grid-column: auto; } .section-head { margin-bottom: 27px; } .request-card { padding: 21px; } .final-cta { padding: 28px; flex-direction: column; align-items: flex-start; } .final-cta .btn { width: 100%; } .footer-bottom { flex-direction: column; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+  </style>
 </head>
 <body>
-<div id="app">
-<header><div class="wrap nav"><a class="brand" href="#home"><img class="logo" src="data:image/webp;base64,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" alt="KaajSathi helping hands logo"><span class="brand-copy"><span>KaajSathi</span><small>আপনার কাজের পাশে</small></span></a><nav class="navlinks"><a href="#services">আমাদের পরিষেবা</a><a href="#how">কীভাবে কাজ করে</a><a href="#request">কাজের অনুরোধ</a></nav><a class="btn" href="#request">কাজের অনুরোধ করুন</a></div></header>
-<main id="home">
-<div class="hero"><div class="wrap hero-grid"><div><span class="kicker">📍 আপনার এলাকার সহায়ক পরিষেবা</span><h1>আপনার কাজের পাশে,<br><span class="grad">সব সময় KaajSathi</span></h1><p class="lead">দৈনন্দিন ছোট-বড় কাজে নির্ভরযোগ্য সহায়তা খুঁজছেন? আপনার প্রয়োজন জানান—KaajSathi আপনাকে সঠিক সহায়তার সঙ্গে যুক্ত করার পথে।</p><div class="actions"><a class="btn" href="#request">পরিষেবা চাই <span style="margin-left:8px">→</span></a><a class="btn alt" href="#services">পরিষেবাগুলি দেখুন</a></div><div class="trust"><span>সহজ অনুরোধ</span><span>স্থানীয় পরিষেবা</span><span>মানুষের পাশে মানুষ</span></div></div><div class="visual"><div class="phone"><div class="phone-top"><span>KaajSathi</span><span>☰</span></div><h3>আজ কী কাজে সাহায্য লাগবে?</h3><p>আপনার প্রয়োজন বেছে নিন</p><div class="service-mini"><span class="mini-icon">🧾</span>লাইন / Queue সহায়তা</div><div class="service-mini"><span class="mini-icon">🛍️</span>কেনাকাটা ও ডেলিভারি</div><div class="service-mini"><span class="mini-icon">🤝</span>ব্যক্তিগত সহায়তা</div><button class="btn" onclick="document.querySelector('#request').scrollIntoView({behavior:'smooth'})">অনুরোধ শুরু করুন</button></div></div></div></div>
-<section id="services"><div class="wrap"><div class="section-head"><h2>আপনার প্রয়োজন, আমাদের সহায়তা</h2><p>প্রথম পর্যায়ে আমরা স্থানীয় মানুষের দৈনন্দিন কাজ সহজ করতে কয়েকটি সহায়ক পরিষেবা নিয়ে এগোচ্ছি।</p></div><div class="cards"><article class="card"><div class="card-icon">🧾</div><h3>লাইন / Queue সহায়তা</h3><p>দীর্ঘ লাইনে অপেক্ষার ঝামেলা কমাতে নির্দিষ্ট কাজের জন্য সহায়তার অনুরোধ জানান।</p></article><article class="card"><div class="card-icon">🛍️</div><h3>কেনাকাটা ও ছোটখাটো কাজ</h3><p>দৈনন্দিন প্রয়োজনীয় জিনিস সংগ্রহ বা কাছাকাছি ছোট কাজের জন্য সাহায্য।</p></article><article class="card"><div class="card-icon">🤝</div><h3>ব্যক্তিগত সহায়তা</h3><p>আপনার প্রয়োজন বুঝে উপযুক্ত স্থানীয় সহায়তার সঙ্গে যোগাযোগের ব্যবস্থা।</p></article></div></div></section>
-<section id="how"><div class="wrap"><div class="section-head"><h2>KaajSathi কীভাবে কাজ করে?</h2><p>সহজ তিনটি ধাপে আপনার কাজের অনুরোধ জানান।</p></div><div class="steps"><div class="step"><b>ধাপ ০১</b><h3>প্রয়োজন জানান</h3><p>কী কাজ, কোথায় এবং কখন সাহায্য দরকার—তা লিখুন।</p></div><div class="step"><b>ধাপ ০২</b><h3>আমরা যোগাযোগ করব</h3><p>আপনার অনুরোধ দেখে পরিষেবা ও সম্ভাব্য খরচ নিয়ে কথা হবে।</p></div><div class="step"><b>ধাপ ০৩</b><h3>কাজ সম্পন্ন করুন</h3><p>বিষয়টি নিশ্চিত হলে নির্ধারিত সহায়তা দেওয়ার ব্যবস্থা হবে।</p></div></div></div></section>
-<section id="request"><div class="wrap"><div class="section-head"><h2>আপনার কাজের অনুরোধ জানান</h2><p>নিচের ফর্মটি পূরণ করুন। এটি আপাতত demo form—সরাসরি booking পাঠায় না।</p></div><form class="request" id="requestForm"><div class="form-grid"><div class="field"><label for="name">আপনার নাম *</label><input id="name" name="name" placeholder="নাম লিখুন" required></div><div class="field"><label for="phone">মোবাইল নম্বর *</label><input id="phone" name="phone" inputmode="tel" pattern="[0-9]{10}" maxlength="10" placeholder="১০ সংখ্যার নম্বর" required></div><div class="field"><label for="service">কোন পরিষেবা দরকার? *</label><select id="service" name="service" required><option value="">বেছে নিন</option><option>লাইন / Queue সহায়তা</option><option>কেনাকাটা ও ছোটখাটো কাজ</option><option>ব্যক্তিগত সহায়তা</option><option>অন্যান্য</option></select></div><div class="field"><label for="area">আপনার এলাকা *</label><input id="area" name="area" placeholder="এলাকার নাম" required></div><div class="field full"><label for="details">কাজের বিস্তারিত</label><textarea id="details" name="details" placeholder="কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন"></textarea></div></div><p class="notice">আপনার তথ্য এই preview-তে কোথাও পাঠানো বা সংরক্ষণ করা হয় না। বাস্তব booking চালু করতে হলে নিরাপদ backend ও যোগাযোগের ব্যবস্থা যুক্ত করতে হবে।</p><button class="btn" type="submit">অনুরোধের preview দেখুন →</button><div id="formMsg" role="status"></div></form></div></section>
-<section><div class="wrap"><div class="cta"><div><h2>আপনার কাজ সহজ হোক KaajSathi-র সঙ্গে</h2><p>আপনার এলাকার জন্য একটি সহজ, সহায়ক পরিষেবা গড়ে তুলছি।</p></div><a class="btn" href="#request">যোগাযোগ শুরু করুন</a></div></div></section>
-</main>
-<footer><div class="wrap footer-row"><div><strong style="color:var(--site-primary);font-size:17px">KaajSathi</strong><div>আপনার কাজের পাশে · Your Work Companion</div></div><div>© 2026 KaajSathi. All rights reserved.</div></div></footer>
-</div>
-<script>
-document.getElementById('requestForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const service = document.getElementById('service').value;
-  const area = document.getElementById('area').value.trim();
-  const msg = document.getElementById('formMsg');
-  msg.textContent = `ধন্যবাদ, ${name}! এটি একটি demo request (${service}, ${area})। Website live booking চালু হলে আপনার অনুরোধ গ্রহণ করা যাবে।`;
-  msg.style.display = 'block';
-});
-</script>
+  <div class="topline"><div class="container topline-inner"><strong data-i18n="topline">আপনার দৈনন্দিন কাজে স্থানীয় সহায়তা</strong><span data-i18n="toplineRight">সহজ অনুরোধ · পরিষ্কার যোগাযোগ</span></div></div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="KaajSathi home">
+        <img src="data:image/webp;base64,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" alt="KaajSathi logo">
+        <span><span class="brand-name">KaajSathi</span><small class="brand-tag" data-i18n="tagline">আপনার কাজের পাশে</small></span>
+      </a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="#services" data-i18n="navServices">পরিষেবা</a>
+        <a href="#how" data-i18n="navHow">যেভাবে কাজ করে</a>
+        <a href="#about" data-i18n="navAbout">আমাদের সম্পর্কে</a>
+        <a href="#faq" data-i18n="navFaq">প্রশ্নোত্তর</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Choose language">
+          <button type="button" data-lang="bn" aria-pressed="true">বাংলা</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="btn" href="#request" data-i18n="navCta">অনুরোধ জানান</a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+      </div>
+    </div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+      <a href="#services" data-i18n="navServices">পরিষেবা</a>
+      <a href="#how" data-i18n="navHow">যেভাবে কাজ করে</a>
+      <a href="#about" data-i18n="navAbout">আমাদের সম্পর্কে</a>
+      <a href="#faq" data-i18n="navFaq">প্রশ্নোত্তর</a>
+      <a href="#request" data-i18n="navCta">অনুরোধ জানান</a>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span>📍</span><span data-i18n="eyebrow">আপনার এলাকার দৈনন্দিন সহায়তা</span></div>
+          <h1 id="heroTitle"><span data-i18n="heroLine1">আপনার কাজের পাশে,</span><br><span data-i18n="heroLine2">সব সময় KaajSathi</span></h1>
+          <p class="hero-copy" data-i18n="heroCopy">দৈনন্দিন ছোট-বড় কাজে সহায়তা খুঁজছেন? আপনার প্রয়োজন জানান। KaajSathi আপনাকে উপযুক্ত স্থানীয় সহায়তার সঙ্গে যোগাযোগ করিয়ে দেওয়ার লক্ষ্য নিয়ে তৈরি।</p>
+          <div class="hero-actions">
+            <a class="btn" href="#request"><span data-i18n="heroPrimary">সহায়তার অনুরোধ করুন</span><span aria-hidden="true">→</span></a>
+            <a class="btn secondary" href="#services" data-i18n="heroSecondary">পরিষেবাগুলি দেখুন</a>
+          </div>
+          <div class="proof-points"><span data-i18n="proof1">সহজ অনুরোধ</span><span data-i18n="proof2">স্থানীয় সহায়তা</span><span data-i18n="proof3">পরিষ্কার যোগাযোগ</span></div>
+        </div>
+        <div class="hero-art" aria-label="Example of the KaajSathi service selection interface">
+          <div class="task-panel">
+            <div class="panel-top"><span>KaajSathi</span><span class="panel-status" data-i18n="panelBadge">সহজ ও সুবিধাজনক</span></div>
+            <h3 data-i18n="panelTitle">আজ কী কাজে সাহায্য লাগবে?</h3>
+            <p data-i18n="panelSub">আপনার প্রয়োজন বেছে নিন</p>
+            <div class="task-row"><span class="task-icon">🧾</span><span data-i18n="serviceQueue">লাইন / Queue সহায়তা</span></div>
+            <div class="task-row"><span class="task-icon">🛍️</span><span data-i18n="serviceErrands">কেনাকাটা ও ছোটখাটো কাজ</span></div>
+            <div class="task-row"><span class="task-icon">🤝</span><span data-i18n="servicePersonal">ব্যক্তিগত সহায়তা</span></div>
+            <a class="btn" href="#request" data-i18n="panelButton">অনুরোধ শুরু করুন</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" aria-labelledby="servicesTitle">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-label" data-i18n="servicesLabel">WHAT WE HELP WITH</div>
+          <h2 id="servicesTitle" data-i18n="servicesTitle">আপনার প্রয়োজন, আমাদের সহায়তা</h2>
+          <p data-i18n="servicesIntro">দৈনন্দিন কাজ সহজ করতে বেছে নিন আপনার প্রয়োজনীয় সহায়তা। পরিষেবা ও availability এলাকা এবং কাজের ধরন অনুযায়ী নিশ্চিত করা হবে।</p>
+        </div>
+        <div class="services-grid">
+          <article class="service-card"><div class="service-icon">🧾</div><h3 data-i18n="queueTitle">লাইন / Queue সহায়তা</h3><p data-i18n="queueDesc">অনুমোদিত ও নিয়মসম্মত কাজের জন্য লাইনে অপেক্ষা বা সংশ্লিষ্ট ছোটখাটো কাজে সহায়তার অনুরোধ জানান।</p><a href="#request"><span data-i18n="serviceRequest">এই পরিষেবার অনুরোধ</span><span aria-hidden="true">→</span></a></article>
+          <article class="service-card"><div class="service-icon">🛍️</div><h3 data-i18n="errandsTitle">কেনাকাটা ও ছোটখাটো কাজ</h3><p data-i18n="errandsDesc">দৈনন্দিন প্রয়োজনীয় জিনিস সংগ্রহ, pickup বা কাছাকাছি ছোট কাজের জন্য সহায়তা চান।</p><a href="#request"><span data-i18n="serviceRequest">এই পরিষেবার অনুরোধ</span><span aria-hidden="true">→</span></a></article>
+          <article class="service-card"><div class="service-icon">🤝</div><h3 data-i18n="personalTitle">ব্যক্তিগত সহায়তা</h3><p data-i18n="personalDesc">আপনার প্রয়োজন সংক্ষেপে জানান। কাজের ধরন বুঝে উপযুক্ত স্থানীয় সহায়তার সম্ভাবনা নিয়ে আলোচনা হবে।</p><a href="#request"><span data-i18n="serviceRequest">এই পরিষেবার অনুরোধ</span><span aria-hidden="true">→</span></a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-section" id="how" aria-labelledby="howTitle">
+      <div class="container">
+        <div class="section-head"><div class="section-label" data-i18n="howLabel">HOW IT WORKS</div><h2 id="howTitle" data-i18n="howTitle">মাত্র তিনটি সহজ ধাপ</h2><p data-i18n="howIntro">আপনার প্রয়োজন জানান, details নিয়ে কথা বলুন, তারপর পরিষেবা নিশ্চিত করুন।</p></div>
+        <div class="steps">
+          <article class="step-card"><div class="step-number">01</div><h3 data-i18n="step1Title">আপনার প্রয়োজন জানান</h3><p data-i18n="step1Desc">কী কাজ, কোন এলাকায় এবং কখন সাহায্য প্রয়োজন—তা আমাদের জানান।</p></article>
+          <article class="step-card"><div class="step-number">02</div><h3 data-i18n="step2Title">বিস্তারিত নিশ্চিত করুন</h3><p data-i18n="step2Desc">কাজের scope, availability এবং সম্ভাব্য খরচ নিয়ে আগে আলোচনা করুন।</p></article>
+          <article class="step-card"><div class="step-number">03</div><h3 data-i18n="step3Title">তারপর পরিষেবা নিন</h3><p data-i18n="step3Desc">সবকিছু পরিষ্কারভাবে নিশ্চিত হওয়ার পরই কাজের ব্যবস্থা করুন।</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" aria-labelledby="aboutTitle">
+      <div class="container">
+        <div class="section-head"><div class="section-label" data-i18n="aboutLabel">WHY KAAJSATHI</div><h2 id="aboutTitle" data-i18n="aboutTitle">সহজ, স্বচ্ছ ও মানুষের কাছাকাছি</h2><p data-i18n="aboutIntro">KaajSathi-র লক্ষ্য হলো স্থানীয় দৈনন্দিন কাজের জন্য সহায়তা খোঁজা ও যোগাযোগের প্রক্রিয়াকে সহজ করা।</p></div>
+        <div class="why-grid">
+          <article class="why-card"><div class="why-icon">📍</div><h3 data-i18n="why1Title">স্থানীয় প্রয়োজনকে গুরুত্ব</h3><p data-i18n="why1Desc">আপনার এলাকার প্রয়োজন ও কাজের ধরন বুঝে অনুরোধ নেওয়ার পরিকল্পনা।</p></article>
+          <article class="why-card"><div class="why-icon">💬</div><h3 data-i18n="why2Title">আগে পরিষ্কার আলোচনা</h3><p data-i18n="why2Desc">পরিষেবা, সময় ও সম্ভাব্য খরচ নিশ্চিত না করে booking final ধরা হবে না।</p></article>
+          <article class="why-card"><div class="why-icon">🧭</div><h3 data-i18n="why3Title">বাস্তবসম্মত প্রত্যাশা</h3><p data-i18n="why3Desc">প্রতিটি অনুরোধের availability আলাদা করে নিশ্চিত করতে হবে; সব কাজ সব এলাকায় নাও পাওয়া যেতে পারে।</p></article>
+        </div>
+        <div class="notice-band" data-i18n="safetyNote">গুরুত্বপূর্ণ: KaajSathi কোনো queue rule, সরকারি নিয়ম, restricted access বা আইন এড়িয়ে যাওয়ার পরিষেবা দেয় না। সব অনুরোধ সংশ্লিষ্ট নিয়ম মেনে বিবেচনা করা হবে।</div>
+      </div>
+    </section>
+
+    <section class="request-section" id="request" aria-labelledby="requestTitle">
+      <div class="container">
+        <div class="section-head"><div class="section-label" data-i18n="requestLabel">MAKE AN ENQUIRY</div><h2 id="requestTitle" data-i18n="requestTitle">আপনার কাজের অনুরোধ তৈরি করুন</h2><p data-i18n="requestIntro">নিচের তথ্য দিয়ে একটি request summary তৈরি করুন। এটি এখনো live booking নয়।</p></div>
+        <form class="request-card" id="requestForm">
+          <div class="form-grid">
+            <div class="field"><label for="customerName" data-i18n="nameLabel">আপনার নাম *</label><input id="customerName" name="name" autocomplete="name" required data-i18n-placeholder="namePlaceholder" placeholder="আপনার নাম লিখুন"></div>
+            <div class="field"><label for="customerPhone" data-i18n="phoneLabel">মোবাইল নম্বর *</label><input id="customerPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" pattern="[0-9+() -]{10,16}" maxlength="16" required data-i18n-placeholder="phonePlaceholder" placeholder="যোগাযোগের নম্বর"></div>
+            <div class="field"><label for="serviceType" data-i18n="serviceLabel">কোন পরিষেবা প্রয়োজন? *</label><select id="serviceType" name="service" required><option value="" data-i18n="selectOption">পরিষেবা বেছে নিন</option><option value="queue" data-i18n="serviceQueue">লাইন / Queue সহায়তা</option><option value="errands" data-i18n="serviceErrands">কেনাকাটা ও ছোটখাটো কাজ</option><option value="personal" data-i18n="servicePersonal">ব্যক্তিগত সহায়তা</option><option value="other" data-i18n="otherOption">অন্যান্য / আগে আলোচনা করতে চাই</option></select></div>
+            <div class="field"><label for="customerArea" data-i18n="areaLabel">আপনার এলাকা *</label><input id="customerArea" name="area" autocomplete="address-level2" required data-i18n-placeholder="areaPlaceholder" placeholder="এলাকা / শহরের নাম"></div>
+            <div class="field"><label for="preferredDate" data-i18n="dateLabel">কবে প্রয়োজন? (ঐচ্ছিক)</label><input id="preferredDate" name="date" type="date"></div>
+            <div class="field"><label for="preferredTime" data-i18n="timeLabel">কোন সময়ে? (ঐচ্ছিক)</label><select id="preferredTime" name="time"><option value="" data-i18n="timeAny">যেকোনো সময় / এখনও নিশ্চিত নই</option><option value="Morning" data-i18n="morning">সকাল</option><option value="Afternoon" data-i18n="afternoon">দুপুর</option><option value="Evening" data-i18n="evening">বিকেল / সন্ধ্যা</option></select></div>
+            <div class="field full"><label for="taskDetails" data-i18n="detailsLabel">কাজের বিস্তারিত (ঐচ্ছিক)</label><textarea id="taskDetails" name="details" data-i18n-placeholder="detailsPlaceholder" placeholder="কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন"></textarea></div>
+          </div>
+          <p class="form-note" data-i18n="formNote">গোপনীয়তা: এই ফর্মটি এখন আপনার browser-এই request summary তৈরি করে। কোনো তথ্য KaajSathi-তে পাঠানো বা server-এ সংরক্ষণ করা হয় না। Live booking চালুর আগে secure submission system যুক্ত করতে হবে।</p>
+          <div class="form-actions"><button class="btn" type="submit" data-i18n="prepareButton">Request summary তৈরি করুন</button><button class="btn secondary" type="reset" data-i18n="clearButton">ফর্ম পরিষ্কার করুন</button></div>
+          <div class="form-result" id="formResult" role="status" aria-live="polite"><strong data-i18n="summaryReady">আপনার request summary তৈরি হয়েছে</strong><pre id="summaryText"></pre><button class="btn green" type="button" id="copySummary" data-i18n="copyButton">Summary copy করুন</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="faqTitle">
+      <div class="container">
+        <div class="section-head"><div class="section-label" data-i18n="faqLabel">HELP & INFORMATION</div><h2 id="faqTitle" data-i18n="faqTitle">সাধারণ কিছু প্রশ্ন</h2><p data-i18n="faqIntro">KaajSathi সম্পর্কে জানার জন্য কয়েকটি প্রয়োজনীয় তথ্য।</p></div>
+        <div class="faq-list">
+          <details><summary data-i18n="faqQ1">KaajSathi কোন কোন এলাকায় পরিষেবা দেয়?</summary><p data-i18n="faqA1">পরিষেবার এলাকা ধাপে ধাপে নির্ধারিত হবে। অনুরোধ জানানোর পর আপনার এলাকার availability নিশ্চিত করতে হবে।</p></details>
+          <details><summary data-i18n="faqQ2">পরিষেবার দাম কত?</summary><p data-i18n="faqA2">কাজের ধরন, সময় ও এলাকার উপর খরচ নির্ভর করতে পারে। কাজ নিশ্চিত করার আগে সম্ভাব্য খরচ আলোচনা করা উচিত।</p></details>
+          <details><summary data-i18n="faqQ3">ফর্ম submit করলে কি booking confirm হবে?</summary><p data-i18n="faqA3">না। এই মুহূর্তে ফর্মটি শুধু request summary তৈরি করে। এটি কোনো booking পাঠায় না বা confirmation দেয় না।</p></details>
+          <details><summary data-i18n="faqQ4">Queue assistance কি যেকোনো জায়গায় পাওয়া যাবে?</summary><p data-i18n="faqA4">না। সংশ্লিষ্ট প্রতিষ্ঠান বা কর্তৃপক্ষের নিয়ম মেনে, যেখানে অনুমতি আছে কেবল সেখানেই সহায়তার অনুরোধ বিবেচনা করা হবে।</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Contact call to action">
+      <div class="container"><div class="final-cta"><div><h2 data-i18n="ctaTitle">আপনার কাজ সহজ করার যাত্রায় KaajSathi</h2><p data-i18n="ctaText">আপনার প্রয়োজন লিখে রাখুন—পরিষেবা চালু ও যোগাযোগের ব্যবস্থা যুক্ত হলে পরবর্তী ধাপ নেওয়া যাবে।</p></div><a class="btn" href="#request" data-i18n="ctaButton">অনুরোধ তৈরি করুন</a></div></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="footer-brand">KaajSathi</div><p class="footer-copy" data-i18n="footerDesc">আপনার কাজের পাশে। দৈনন্দিন স্থানীয় সহায়তা খোঁজার একটি সহজ উদ্যোগ।</p></div>
+        <div><div class="footer-title" data-i18n="footerExplore">Explore</div><div class="footer-links"><a href="#services" data-i18n="navServices">পরিষেবা</a><a href="#how" data-i18n="navHow">যেভাবে কাজ করে</a><a href="#about" data-i18n="navAbout">আমাদের সম্পর্কে</a></div></div>
+        <div><div class="footer-title" data-i18n="footerHelp">Help</div><div class="footer-links"><a href="#faq" data-i18n="navFaq">প্রশ্নোত্তর</a><a href="#request" data-i18n="navCta">অনুরোধ জানান</a></div></div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="year"></span> KaajSathi. <span data-i18n="rights">সর্বস্বত্ব সংরক্ষিত।</span></span><span data-i18n="footerTag">আপনার কাজের পাশে · Your Work Companion</span></div>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      bn: {
+        tagline:"আপনার কাজের পাশে", topline:"আপনার দৈনন্দিন কাজে স্থানীয় সহায়তা", toplineRight:"সহজ অনুরোধ · পরিষ্কার যোগাযোগ",
+        navServices:"পরিষেবা", navHow:"যেভাবে কাজ করে", navAbout:"আমাদের সম্পর্কে", navFaq:"প্রশ্নোত্তর", navCta:"অনুরোধ জানান",
+        eyebrow:"আপনার এলাকার দৈনন্দিন সহায়তা", heroLine1:"আপনার কাজের পাশে,", heroLine2:"সব সময় KaajSathi", heroCopy:"দৈনন্দিন ছোট-বড় কাজে সহায়তা খুঁজছেন? আপনার প্রয়োজন জানান। KaajSathi আপনাকে উপযুক্ত স্থানীয় সহায়তার সঙ্গে যোগাযোগ করিয়ে দেওয়ার লক্ষ্য নিয়ে তৈরি।",
+        heroPrimary:"সহায়তার অনুরোধ করুন", heroSecondary:"পরিষেবাগুলি দেখুন", proof1:"সহজ অনুরোধ", proof2:"স্থানীয় সহায়তা", proof3:"পরিষ্কার যোগাযোগ", panelBadge:"সহজ ও সুবিধাজনক", panelTitle:"আজ কী কাজে সাহায্য লাগবে?", panelSub:"আপনার প্রয়োজন বেছে নিন", serviceQueue:"লাইন / Queue সহায়তা", serviceErrands:"কেনাকাটা ও ছোটখাটো কাজ", servicePersonal:"ব্যক্তিগত সহায়তা", panelButton:"অনুরোধ শুরু করুন",
+        servicesLabel:"আমাদের পরিষেবা", servicesTitle:"আপনার প্রয়োজন, আমাদের সহায়তা", servicesIntro:"দৈনন্দিন কাজ সহজ করতে বেছে নিন আপনার প্রয়োজনীয় সহায়তা। পরিষেবা ও availability এলাকা এবং কাজের ধরন অনুযায়ী নিশ্চিত করা হবে।", queueTitle:"লাইন / Queue সহায়তা", queueDesc:"অনুমোদিত ও নিয়মসম্মত কাজের জন্য লাইনে অপেক্ষা বা সংশ্লিষ্ট ছোটখাটো কাজে সহায়তার অনুরোধ জানান।", errandsTitle:"কেনাকাটা ও ছোটখাটো কাজ", errandsDesc:"দৈনন্দিন প্রয়োজনীয় জিনিস সংগ্রহ, pickup বা কাছাকাছি ছোট কাজের জন্য সহায়তা চান।", personalTitle:"ব্যক্তিগত সহায়তা", personalDesc:"আপনার প্রয়োজন সংক্ষেপে জানান। কাজের ধরন বুঝে উপযুক্ত স্থানীয় সহায়তার সম্ভাবনা নিয়ে আলোচনা হবে।", serviceRequest:"এই পরিষেবার অনুরোধ",
+        howLabel:"কীভাবে কাজ করে", howTitle:"মাত্র তিনটি সহজ ধাপ", howIntro:"আপনার প্রয়োজন জানান, details নিয়ে কথা বলুন, তারপর পরিষেবা নিশ্চিত করুন।", step1Title:"আপনার প্রয়োজন জানান", step1Desc:"কী কাজ, কোন এলাকায় এবং কখন সাহায্য প্রয়োজন—তা আমাদের জানান।", step2Title:"বিস্তারিত নিশ্চিত করুন", step2Desc:"কাজের scope, availability এবং সম্ভাব্য খরচ নিয়ে আগে আলোচনা করুন।", step3Title:"তারপর পরিষেবা নিন", step3Desc:"সবকিছু পরিষ্কারভাবে নিশ্চিত হওয়ার পরই কাজের ব্যবস্থা করুন।",
+        aboutLabel:"কেন KaajSathi", aboutTitle:"সহজ, স্বচ্ছ ও মানুষের কাছাকাছি", aboutIntro:"KaajSathi-র লক্ষ্য হলো স্থানীয় দৈনন্দিন কাজের জন্য সহায়তা খোঁজা ও যোগাযোগের প্রক্রিয়াকে সহজ করা।", why1Title:"স্থানীয় প্রয়োজনকে গুরুত্ব", why1Desc:"আপনার এলাকার প্রয়োজন ও কাজের ধরন বুঝে অনুরোধ নেওয়ার পরিকল্পনা।", why2Title:"আগে পরিষ্কার আলোচনা", why2Desc:"পরিষেবা, সময় ও সম্ভাব্য খরচ নিশ্চিত না করে booking final ধরা হবে না।", why3Title:"বাস্তবসম্মত প্রত্যাশা", why3Desc:"প্রতিটি অনুরোধের availability আলাদা করে নিশ্চিত করতে হবে; সব কাজ সব এলাকায় নাও পাওয়া যেতে পারে।", safetyNote:"গুরুত্বপূর্ণ: KaajSathi কোনো queue rule, সরকারি নিয়ম, restricted access বা আইন এড়িয়ে যাওয়ার পরিষেবা দেয় না। সব অনুরোধ সংশ্লিষ্ট নিয়ম মেনে বিবেচনা করা হবে।",
+        requestLabel:"অনুরোধ তৈরি করুন", requestTitle:"আপনার কাজের অনুরোধ তৈরি করুন", requestIntro:"নিচের তথ্য দিয়ে একটি request summary তৈরি করুন। এটি এখনো live booking নয়।", nameLabel:"আপনার নাম *", namePlaceholder:"আপনার নাম লিখুন", phoneLabel:"মোবাইল নম্বর *", phonePlaceholder:"যোগাযোগের নম্বর", serviceLabel:"কোন পরিষেবা প্রয়োজন? *", selectOption:"পরিষেবা বেছে নিন", otherOption:"অন্যান্য / আগে আলোচনা করতে চাই", areaLabel:"আপনার এলাকা *", areaPlaceholder:"এলাকা / শহরের নাম", dateLabel:"কবে প্রয়োজন? (ঐচ্ছিক)", timeLabel:"কোন সময়ে? (ঐচ্ছিক)", timeAny:"যেকোনো সময় / এখনও নিশ্চিত নই", morning:"সকাল", afternoon:"দুপুর", evening:"বিকেল / সন্ধ্যা", detailsLabel:"কাজের বিস্তারিত (ঐচ্ছিক)", detailsPlaceholder:"কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন", formNote:"গোপনীয়তা: এই ফর্মটি এখন আপনার browser-এই request summary তৈরি করে। কোনো তথ্য KaajSathi-তে পাঠানো বা server-এ সংরক্ষণ করা হয় না। Live booking চালুর আগে secure submission system যুক্ত করতে হবে।", prepareButton:"Request summary তৈরি করুন", clearButton:"ফর্ম পরিষ্কার করুন", summaryReady:"আপনার request summary তৈরি হয়েছে", copyButton:"Summary copy করুন", copied:"Request summary copy হয়েছে।", copyFail:"Copy করা যায়নি। Summary-টি select করে copy করুন।", missingFields:"অনুগ্রহ করে প্রয়োজনীয় ঘরগুলি পূরণ করুন।", formSummaryTitle:"KaajSathi request summary", summaryName:"নাম", summaryPhone:"মোবাইল", summaryService:"পরিষেবা", summaryArea:"এলাকা", summaryDate:"তারিখ", summaryTime:"সময়", summaryDetails:"বিস্তারিত", dateNone:"নির্ধারিত নয়", detailsNone:"দেওয়া হয়নি",
+        faqLabel:"সাহায্য ও তথ্য", faqTitle:"সাধারণ কিছু প্রশ্ন", faqIntro:"KaajSathi সম্পর্কে জানার জন্য কয়েকটি প্রয়োজনীয় তথ্য।", faqQ1:"KaajSathi কোন কোন এলাকায় পরিষেবা দেয়?", faqA1:"পরিষেবার এলাকা ধাপে ধাপে নির্ধারিত হবে। অনুরোধ জানানোর পর আপনার এলাকার availability নিশ্চিত করতে হবে।", faqQ2:"পরিষেবার দাম কত?", faqA2:"কাজের ধরন, সময় ও এলাকার উপর খরচ নির্ভর করতে পারে। কাজ নিশ্চিত করার আগে সম্ভাব্য খরচ আলোচনা করা উচিত।", faqQ3:"ফর্ম submit করলে কি booking confirm হবে?", faqA3:"না। এই মুহূর্তে ফর্মটি শুধু request summary তৈরি করে। এটি কোনো booking পাঠায় না বা confirmation দেয় না।", faqQ4:"Queue assistance কি যেকোনো জায়গায় পাওয়া যাবে?", faqA4:"না। সংশ্লিষ্ট প্রতিষ্ঠান বা কর্তৃপক্ষের নিয়ম মেনে, যেখানে অনুমতি আছে কেবল সেখানেই সহায়তার অনুরোধ বিবেচনা করা হবে।",
+        ctaTitle:"আপনার কাজ সহজ করার যাত্রায় KaajSathi", ctaText:"আপনার প্রয়োজন লিখে রাখুন—পরিষেবা চালু ও যোগাযোগের ব্যবস্থা যুক্ত হলে পরবর্তী ধাপ নেওয়া যাবে।", ctaButton:"অনুরোধ তৈরি করুন", footerDesc:"আপনার কাজের পাশে। দৈনন্দিন স্থানীয় সহায়তা খোঁজার একটি সহজ উদ্যোগ।", footerExplore:"ঘুরে দেখুন", footerHelp:"সাহায্য", rights:"সর্বস্বত্ব সংরক্ষিত।", footerTag:"আপনার কাজের পাশে · Your Work Companion", menuOpen:"মেনু খুলুন", menuClose:"মেনু বন্ধ করুন", docTitle:"KaajSathi — আপনার কাজের পাশে | Local Assistance", metaDescription:"KaajSathi connects you with local assistance for queue support, shopping, errands and everyday personal tasks. আপনার দৈনন্দিন কাজে স্থানীয় সহায়তা পান।"
+      },
+      en: {
+        tagline:"Your Work Companion", topline:"Local help for your everyday tasks", toplineRight:"Easy requests · Clear communication",
+        navServices:"Services", navHow:"How it works", navAbout:"About us", navFaq:"FAQs", navCta:"Make a request",
+        eyebrow:"Everyday help in your area", heroLine1:"Everyday tasks,", heroLine2:"made easier with KaajSathi", heroCopy:"Looking for a helping hand with everyday tasks? Tell us what you need. KaajSathi is being built to help you connect with suitable local assistance.",
+        heroPrimary:"Request assistance", heroSecondary:"Explore services", proof1:"Simple requests", proof2:"Local assistance", proof3:"Clear communication", panelBadge:"Simple and convenient", panelTitle:"What do you need help with today?", panelSub:"Choose the help you need", serviceQueue:"Queue assistance", serviceErrands:"Shopping and small errands", servicePersonal:"Personal assistance", panelButton:"Start a request",
+        servicesLabel:"WHAT WE HELP WITH", servicesTitle:"The help you need, close to home", servicesIntro:"Choose the assistance you need for everyday tasks. Service availability will be confirmed based on your area and the nature of the task.", queueTitle:"Queue assistance", queueDesc:"Request help with waiting in line or related small tasks where the activity is permitted and follows the applicable rules.", errandsTitle:"Shopping and small errands", errandsDesc:"Get help with everyday item collection, pickups or small nearby errands.", personalTitle:"Personal assistance", personalDesc:"Tell us what you need. We will discuss whether suitable local assistance may be available for the task.", serviceRequest:"Request this service",
+        howLabel:"HOW IT WORKS", howTitle:"Three simple steps", howIntro:"Share what you need, discuss the details, and confirm the service before proceeding.", step1Title:"Tell us what you need", step1Desc:"Share the task, your area and when you need assistance.", step2Title:"Confirm the details", step2Desc:"Discuss the scope, availability and expected cost in advance.", step3Title:"Proceed with the service", step3Desc:"Make arrangements only after the details have been clearly confirmed.",
+        aboutLabel:"WHY KAAJSATHI", aboutTitle:"Simple, transparent and people-first", aboutIntro:"KaajSathi aims to make it easier to find and coordinate local help for everyday tasks.", why1Title:"Local needs matter", why1Desc:"Requests are intended to be considered with the local area and nature of the task in mind.", why2Title:"Clear discussion first", why2Desc:"A booking should not be treated as final until the service, timing and expected cost are confirmed.", why3Title:"Realistic expectations", why3Desc:"Availability must be confirmed for each request; not every task may be available in every area.", safetyNote:"Important: KaajSathi does not provide services to bypass queue rules, government procedures, restricted access or the law. All requests are considered subject to applicable rules.",
+        requestLabel:"MAKE AN ENQUIRY", requestTitle:"Prepare your service request", requestIntro:"Use the form below to create a request summary. This is not a live booking yet.", nameLabel:"Your name *", namePlaceholder:"Enter your name", phoneLabel:"Mobile number *", phonePlaceholder:"Your contact number", serviceLabel:"Which service do you need? *", selectOption:"Choose a service", otherOption:"Other / discuss first", areaLabel:"Your area *", areaPlaceholder:"Area / city name", dateLabel:"When do you need it? (Optional)", timeLabel:"Preferred time (Optional)", timeAny:"Any time / Not sure yet", morning:"Morning", afternoon:"Afternoon", evening:"Afternoon / Evening", detailsLabel:"Task details (Optional)", detailsPlaceholder:"Briefly describe the help you need", formNote:"Privacy: This form currently creates a request summary in your browser only. No information is sent to KaajSathi or stored on a server. A secure submission system must be added before live booking is enabled.", prepareButton:"Create request summary", clearButton:"Clear form", summaryReady:"Your request summary is ready", copyButton:"Copy summary", copied:"Request summary copied.", copyFail:"Could not copy automatically. Select and copy the summary manually.", missingFields:"Please complete the required fields.", formSummaryTitle:"KaajSathi request summary", summaryName:"Name", summaryPhone:"Mobile", summaryService:"Service", summaryArea:"Area", summaryDate:"Date", summaryTime:"Time", summaryDetails:"Details", dateNone:"Not specified", detailsNone:"Not provided",
+        faqLabel:"HELP & INFORMATION", faqTitle:"Frequently asked questions", faqIntro:"A few useful things to know about KaajSathi.", faqQ1:"Which areas does KaajSathi serve?", faqA1:"Service areas will be introduced in stages. Availability for your area must be confirmed after you make an enquiry.", faqQ2:"How much does a service cost?", faqA2:"Costs may depend on the task, timing and area. Discuss the expected cost before confirming any service.", faqQ3:"Will submitting the form confirm my booking?", faqA3:"No. The form currently creates a request summary only. It does not send a booking or provide a confirmation.", faqQ4:"Is queue assistance available everywhere?", faqA4:"No. Requests will only be considered where assistance is permitted by the relevant organisation or authority and follows its rules.",
+        ctaTitle:"Make everyday tasks easier with KaajSathi", ctaText:"Prepare your request now. The next step will be available once service operations and an official contact channel are in place.", ctaButton:"Prepare a request", footerDesc:"Your work companion. A simple initiative to help people find local assistance for everyday tasks.", footerExplore:"Explore", footerHelp:"Help", rights:"All rights reserved.", footerTag:"Your Work Companion · আপনার কাজের পাশে", menuOpen:"Open menu", menuClose:"Close menu", docTitle:"KaajSathi — Your Work Companion | Local Assistance", metaDescription:"KaajSathi connects you with local assistance for queue support, shopping, errands and everyday personal tasks."
+      }
+    };
+
+    let currentLanguage = 'bn';
+    const languageButtons = document.querySelectorAll('[data-lang]');
+    function setLanguage(lang) {
+      if (!translations[lang]) return;
+      currentLanguage = lang;
+      document.documentElement.lang = lang;
+      document.title = translations[lang].docTitle;
+      const description = document.querySelector('meta[name="description"]');
+      if (description) description.setAttribute('content', translations[lang].metaDescription);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key] !== undefined) el.textContent = translations[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key] !== undefined) el.setAttribute('placeholder', translations[lang][key]);
+      });
+      languageButtons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang)));
+      const menuButton = document.querySelector('.menu-toggle');
+      if (menuButton) menuButton.setAttribute('aria-label', translations[lang].menuOpen);
+      try { localStorage.setItem('kaajsathi-language', lang); } catch (_) {}
+    }
+    languageButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+    try {
+      const savedLanguage = localStorage.getItem('kaajsathi-language');
+      if (savedLanguage && translations[savedLanguage]) setLanguage(savedLanguage);
+    } catch (_) {}
+
+    const menuButton = document.querySelector('.menu-toggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuButton.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.setAttribute('aria-label', translations[currentLanguage][open ? 'menuClose' : 'menuOpen']);
+      menuButton.textContent = open ? '×' : '☰';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', translations[currentLanguage].menuOpen);
+      menuButton.textContent = '☰';
+    }));
+
+    const form = document.getElementById('requestForm');
+    const result = document.getElementById('formResult');
+    const summary = document.getElementById('summaryText');
+    const values = () => ({
+      name: document.getElementById('customerName').value.trim(),
+      phone: document.getElementById('customerPhone').value.trim(),
+      service: document.getElementById('serviceType').selectedOptions[0]?.textContent || '',
+      area: document.getElementById('customerArea').value.trim(),
+      date: document.getElementById('preferredDate').value,
+      time: document.getElementById('preferredTime').selectedOptions[0]?.textContent || '',
+      details: document.getElementById('taskDetails').value.trim()
+    });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const v = values();
+      const t = translations[currentLanguage];
+      const lines = [
+        t.formSummaryTitle,
+        `${t.summaryName}: ${v.name}`,
+        `${t.summaryPhone}: ${v.phone}`,
+        `${t.summaryService}: ${v.service}`,
+        `${t.summaryArea}: ${v.area}`,
+        `${t.summaryDate}: ${v.date || t.dateNone}`,
+        `${t.summaryTime}: ${v.time || t.dateNone}`,
+        `${t.summaryDetails}: ${v.details || t.detailsNone}`
+      ];
+      summary.textContent = lines.join('\n');
+      result.classList.add('show');
+      result.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    });
+    form.addEventListener('reset', () => { result.classList.remove('show'); summary.textContent = ''; });
+    document.getElementById('copySummary').addEventListener('click', async () => {
+      const t = translations[currentLanguage];
+      const text = summary.textContent;
+      try {
+        if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+        else {
+          const temp = document.createElement('textarea'); temp.value = text; temp.style.position = 'fixed'; temp.style.opacity = '0'; document.body.appendChild(temp); temp.select();
+          const ok = document.execCommand('copy'); temp.remove(); if (!ok) throw new Error('copy failed');
+        }
+        document.getElementById('copySummary').textContent = t.copied;
+      } catch (_) {
+        document.getElementById('copySummary').textContent = t.copyFail;
+      }
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
