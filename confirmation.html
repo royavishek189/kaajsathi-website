@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0f766e">
+  <title>Booking Confirmed | KaajSathi</title>
+  <style>
+    :root{--brand:#0f766e;--brand-dark:#115e59;--ink:#172b2a;--muted:#607270;--line:#dce9e6;--bg:#f3f8f7}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;padding:24px 16px;display:grid;place-items:center;background:linear-gradient(135deg,#eaf7f3,#f8fbfa);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+    .card{width:min(100%,560px);background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px 28px;box-shadow:0 18px 50px rgba(17,94,89,.10);text-align:center}
+    .tick{width:68px;height:68px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:#dcfce7;color:#15803d;font-size:38px;font-weight:700}
+    h1{font-size:28px;margin:0 0 8px;color:var(--brand-dark)}
+    .sub{color:var(--muted);line-height:1.6;margin:0 auto 22px}
+    .idbox{background:#f0fdfa;border:1px dashed #75b9ad;border-radius:14px;padding:16px;margin:20px 0;text-align:left}
+    .label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:7px}
+    #bookingId{font-size:15px;font-weight:700;word-break:break-all;color:#134e4a}
+    .meta{font-size:14px;line-height:1.8;color:#405653;text-align:left;margin:16px 0}
+    .actions{display:grid;gap:10px;margin-top:24px}
+    a,button{width:100%;border:0;border-radius:11px;padding:14px 16px;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer}
+    .primary{background:var(--brand);color:#fff}.secondary{background:#e8f4f1;color:var(--brand-dark)}
+    .note{font-size:12px;color:var(--muted);line-height:1.6;margin:20px 0 0}
+    .error{color:#b91c1c}
+    @media(max-width:480px){.card{padding:28px 20px}h1{font-size:24px}}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="tick" aria-hidden="true">✓</div>
+    <h1>Booking request received!</h1>
+    <p class="sub">আপনার অনুরোধ সফলভাবে জমা হয়েছে। ধন্যবাদ!<br>Our KaajSathi team will contact you to confirm availability and details.</p>
+
+    <section class="idbox" aria-live="polite">
+      <span class="label">Your Booking ID / বুকিং আইডি</span>
+      <div id="bookingId">Loading…</div>
+    </section>
+
+    <div class="meta">
+      <div><strong>Service / পরিষেবা:</strong> <span id="service">—</span></div>
+      <div><strong>Area / এলাকা:</strong> <span id="area">—</span></div>
+    </div>
+
+    <div class="actions">
+      <button class="secondary" id="copyButton" type="button">Copy Booking ID / আইডি কপি করুন</button>
+      <a class="primary" href="track-booking.html">Track My Booking / বুকিং ট্র্যাক করুন</a>
+      <a class="secondary" href="index.html">Back to Home / হোমে ফিরুন</a>
+    </div>
+
+    <p class="note">Please save your Booking ID. To track your request, you will also need the mobile number used while booking.<br>অনুগ্রহ করে বুকিং আইডিটি সংরক্ষণ করুন। বুকিং ট্র্যাক করতে বুকিংয়ের সময় দেওয়া মোবাইল নম্বরও প্রয়োজন হবে।</p>
+    <p class="note error" id="pageError" hidden>Booking ID পাওয়া যায়নি। অনুগ্রহ করে আপনার booking confirmation link পরীক্ষা করুন।</p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const bookingId = params.get('booking_id') || '';
+    const service = params.get('service') || '';
+    const area = params.get('area') || '';
+    document.getElementById('bookingId').textContent = bookingId || 'Not available';
+    document.getElementById('service').textContent = service || '—';
+    document.getElementById('area').textContent = area || '—';
+    if (!bookingId) document.getElementById('pageError').hidden = false;
+
+    document.getElementById('copyButton').addEventListener('click', async () => {
+      if (!bookingId) return;
+      const button = document.getElementById('copyButton');
+      try {
+        await navigator.clipboard.writeText(bookingId);
+        button.textContent = 'Copied! / কপি হয়েছে';
+      } catch (_) {
+        const field = document.createElement('textarea');
+        field.value = bookingId;
+        document.body.appendChild(field);
+        field.select();
+        const copied = document.execCommand('copy');
+        field.remove();
+        button.textContent = copied ? 'Copied! / কপি হয়েছে' : 'Copy failed / কপি হয়নি';
+      }
+    });
+  </script>
+</body>
+</html>
