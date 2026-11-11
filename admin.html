@@ -40,7 +40,25 @@
       <div class="toolbar"><div class="filter"><label for="statusFilter">Filter by status</label><select id="statusFilter"><option value="all">All bookings</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="assigned">Assigned</option><option value="in_progress">In progress</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></div><p id="loadInfo" class="small">Bookings are loaded from Supabase.</p></div>
       <div id="dashboardMessage" class="message hidden" role="alert"></div>
       <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Service</th><th>Area / Address</th><th>Created</th><th>Status</th><th>Action</th></tr></thead><tbody id="bookingRows"><tr><td colspan="7" class="empty">Loading bookings…</td></tr></tbody></table></div>
-      <section id="detailPanel" class="details hidden"><h2>Booking details</h2><div id="detailContent" class="details-grid"></div></section>
+      <section id="detailPanel" class="details hidden">
+        <h2>Booking details</h2>
+        <div id="detailContent" class="details-grid"></div>
+        <div class="panel" style="margin-top:16px;padding:16px;background:#fbfcff">
+          <h2>Assign service person</h2>
+          <p class="muted">Enter the name and mobile number of the person who will visit the customer. These details will appear on the customer's Track Booking page after the booking is confirmed.</p>
+          <form id="assignmentForm">
+            <input type="hidden" id="assignmentBookingId" />
+            <label for="assignedPersonName">Service person's name</label>
+            <input id="assignedPersonName" type="text" maxlength="100" placeholder="Enter full name" required />
+            <label for="assignedPersonPhone">Service person's mobile number</label>
+            <input id="assignedPersonPhone" type="tel" inputmode="tel" maxlength="20" placeholder="Enter contact number" required />
+            <div class="row" style="margin-top:14px">
+              <button id="saveAssignmentButton" type="submit">Save service person</button>
+              <a id="customerTrackLink" class="small" href="/track-booking.html" target="_blank" rel="noopener">Open customer tracking page</a>
+            </div>
+          </form>
+        </div>
+      </section>
     </section>
   </main>
 <script>
@@ -72,7 +90,7 @@
     $('refreshButton').disabled = true;
     $('loadInfo').textContent = 'Loading…';
     const { data, error } = await client.from('bookings')
-      .select('id, customer_name, customer_phone, address, description, scheduled_at, status, created_at, service:services(name)')
+      .select('id, customer_name, customer_phone, address, description, scheduled_at, status, created_at, assigned_person_name, assigned_person_phone, service:services(name)')
       .order('created_at', { ascending: false });
     $('refreshButton').disabled = false;
     if (error) {
@@ -109,8 +127,12 @@
 
   function showDetails(id) {
     const b=bookings.find(x=>x.id===id); if(!b) return;
-    const fields=[['Booking ID',b.id],['Customer name',b.customer_name],['Mobile number',b.customer_phone],['Service',b.service?.name],['Address / area',b.address],['Preferred date & time',formatDate(b.scheduled_at)],['Current status',statusLabel(b.status)],['Request details',b.description],['Booking created',formatDate(b.created_at)]];
+    const fields=[['Booking ID',b.id],['Customer name',b.customer_name],['Mobile number',b.customer_phone],['Service',b.service?.name],['Address / area',b.address],['Preferred date & time',formatDate(b.scheduled_at)],['Current status',statusLabel(b.status)],['Request details',b.description],['Booking created',formatDate(b.created_at)],['Assigned service person',b.assigned_person_name],['Service person contact',b.assigned_person_phone]];
     $('detailContent').innerHTML=fields.map(([label,value])=>`<div class="detail"><b>${escapeHtml(label)}</b>${escapeHtml(value || '—')}</div>`).join('');
+    $('assignmentBookingId').value=b.id;
+    $('assignedPersonName').value=b.assigned_person_name || '';
+    $('assignedPersonPhone').value=b.assigned_person_phone || '';
+    $('customerTrackLink').href='/track-booking.html';
     $('detailPanel').classList.remove('hidden');
     $('detailPanel').scrollIntoView({behavior:'smooth',block:'start'});
   }
@@ -127,6 +149,33 @@
     showMessage('dashboardMessage',`Booking ${id} status updated to ${statusLabel(newStatus)}.`);
     await loadBookings();
   }
+
+  $('assignmentForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    hideMessage('dashboardMessage');
+    const bookingId = $('assignmentBookingId').value;
+    const name = $('assignedPersonName').value.trim();
+    const phone = $('assignedPersonPhone').value.trim();
+    if (!bookingId || !name || !phone) {
+      showMessage('dashboardMessage', 'Please enter both the service person name and mobile number.', true);
+      return;
+    }
+    const button = $('saveAssignmentButton');
+    button.disabled = true;
+    button.textContent = 'Saving…';
+    const { error } = await client.from('bookings')
+      .update({ assigned_person_name: name, assigned_person_phone: phone })
+      .eq('id', bookingId);
+    button.disabled = false;
+    button.textContent = 'Save service person';
+    if (error) {
+      showMessage('dashboardMessage', `Could not save service person: ${error.message}\nPlease run the supplied database SQL first and check the admin UPDATE policy.`, true);
+      return;
+    }
+    showMessage('dashboardMessage', 'Service person details saved. They will appear to the customer when the booking is confirmed.');
+    await loadBookings();
+    showDetails(bookingId);
+  });
 
   $('loginForm').addEventListener('submit', async event => {
     event.preventDefault(); hideMessage('loginMessage');
