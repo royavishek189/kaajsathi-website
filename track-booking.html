@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaajSathi | Track Booking</title>
+  <meta name="description" content="Securely check the status of your KaajSathi service request." />
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--ink:#172033;--muted:#687386;--line:#e5e9f0;--brand:#175cd3;--bg:#f5f7fb;--green:#087443;--red:#b42318}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Arial,sans-serif}
+    header{background:#102a56;color:#fff;padding:18px 22px}header a{color:#fff;text-decoration:none;font-weight:700}
+    main{max-width:720px;margin:35px auto;padding:0 16px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 4px 18px rgba(16,42,86,.05)}
+    h1{margin:0 0 6px;font-size:26px}h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted)}
+    label{display:block;font-weight:700;margin:14px 0 6px}input{width:100%;padding:12px;border:1px solid #cfd6e2;border-radius:8px;font:inherit}
+    button{border:0;border-radius:8px;padding:12px 18px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;width:100%;margin-top:18px}button:disabled{opacity:.6;cursor:wait}
+    .message{padding:12px;border-radius:8px;margin-top:16px;background:#eef4ff;color:#173d7a;white-space:pre-wrap}.error{background:#fff0ef;color:var(--red)}
+    .hidden{display:none!important}.result{margin-top:22px}.status{display:inline-block;padding:5px 10px;border-radius:20px;background:#e8f5ee;color:var(--green);font-weight:700;text-transform:capitalize}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{background:#f7f9fc;border-radius:9px;padding:12px;overflow-wrap:anywhere}.item small{display:block;color:var(--muted);margin-bottom:4px}
+    .steps{margin:20px 0 0;padding:0;list-style:none}.steps li{padding:9px 0;border-bottom:1px solid var(--line)}.steps li:last-child{border:0}
+    .partner{margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:10px}.partner a{color:var(--brand);font-weight:700}
+    @media(max-width:560px){.grid{grid-template-columns:1fr}.card{padding:18px}main{margin:20px auto}}
+  </style>
+</head>
+<body>
+  <header><a href="/">← KaajSathi</a></header>
+  <main>
+    <section class="card">
+      <h1>Track Your Booking</h1>
+      <p class="muted">Enter your Booking ID and the mobile number used when you submitted the request.</p>
+      <form id="trackForm">
+        <label for="bookingId">Booking ID</label>
+        <input id="bookingId" name="bookingId" autocomplete="off" required placeholder="Paste your booking ID" />
+        <label for="phone">Registered mobile number</label>
+        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Enter your mobile number" />
+        <button id="trackButton" type="submit">Track Booking</button>
+      </form>
+      <div id="message" class="message hidden" role="alert"></div>
+      <section id="result" class="result hidden" aria-live="polite">
+        <h2>Booking details</h2>
+        <div class="grid" id="bookingInfo"></div>
+        <div style="margin-top:16px">Current status: <span id="status" class="status"></span></div>
+        <ul class="steps" id="steps"></ul>
+        <div id="partner" class="partner hidden"></div>
+        <p class="muted" style="font-size:12px;margin-top:16px">For any correction or help, please contact the KaajSathi team using your booking details.</p>
+      </section>
+    </section>
+  </main>
+<script>
+(() => {
+  const SUPABASE_URL = 'https://djjkxtybkpucdewhuxtv.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_G7l04_Fn3oHIp12dJN_3wQ_7--JCbFn';
+  const TRACK_URL = `${SUPABASE_URL}/functions/v1/track-booking`;
+  const $ = id => document.getElementById(id);
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const labels = {pending:'Pending',confirmed:'Confirmed',assigned:'Assigned',in_progress:'In progress',completed:'Completed',cancelled:'Cancelled'};
+  function showMessage(text,isError=false){$('message').textContent=text;$('message').classList.remove('hidden','error');if(isError)$('message').classList.add('error');}
+  function render(data){
+    $('bookingInfo').innerHTML = [
+      ['Booking ID',data.id || data.booking_id],['Service',data.service_name],['Request date',data.created_at ? new Date(data.created_at).toLocaleString() : '—']
+    ].map(([k,v])=>`<div class="item"><small>${k}</small>${escapeHtml(v || '—')}</div>`).join('');
+    $('status').textContent = labels[data.status] || data.status || 'Unknown';
+    const sequence = [['pending','Booking received'],['confirmed','Booking confirmed'],['assigned','Service person assigned'],['in_progress','Service in progress'],['completed','Service completed']];
+    const currentIndex = sequence.findIndex(x=>x[0]===data.status);
+    $('steps').innerHTML = sequence.map(([key,label],i)=>{
+      const done = data.status==='cancelled' ? false : i <= currentIndex;
+      return `<li>${done?'✓':'○'} ${label}${key===data.status?' — Current':''}</li>`;
+    }).join('') + (data.status==='cancelled' ? '<li>Booking cancelled</li>' : '');
+    const partner = $('partner');
+    if(data.assigned_person_name && data.assigned_person_phone && ['confirmed','assigned','in_progress','completed'].includes(data.status)){
+      const tel = String(data.assigned_person_phone).replace(/[^\d+]/g,'');
+      partner.innerHTML = `<h2>Your assigned service person</h2><p><b>${escapeHtml(data.assigned_person_name)}</b></p><p>${escapeHtml(data.assigned_person_phone)}</p><a href="tel:${escapeHtml(tel)}">Call service person</a>`;
+      partner.classList.remove('hidden');
+    } else {
+      partner.textContent = 'Your service person has not been assigned yet. The KaajSathi team will update this page after confirmation.';
+      partner.classList.remove('hidden');
+    }
+    $('result').classList.remove('hidden');
+  }
+  $('trackForm').addEventListener('submit',async e=>{
+    e.preventDefault();$('result').classList.add('hidden');$('message').classList.add('hidden');
+    const id=$('bookingId').value.trim(), phone=$('phone').value.trim();
+    if(!id || !phone){showMessage('Please enter both details.',true);return;}
+    $('trackButton').disabled=true;$('trackButton').textContent='Checking…';
+    try{
+      const response=await fetch(TRACK_URL,{method:'POST',headers:{'Content-Type':'application/json',apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`},body:JSON.stringify({booking_id:id,phone})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(data.error || 'Booking not found or details do not match.');
+      const booking = data.booking || data;
+      if (!booking.id && !booking.booking_id) throw new Error(data.error || 'Booking not found or details do not match.');
+      render(booking);
+    }catch(err){showMessage(err.message || 'Could not check this booking. Please try again.',true);}
+    finally{$('trackButton').disabled=false;$('trackButton').textContent='Track Booking';}
+  });
+})();
+</script>
+</body>
+</html>
