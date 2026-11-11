@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaajSathi | Admin Dashboard</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--ink:#172033;--muted:#687386;--line:#e5e9f0;--brand:#175cd3;--bg:#f5f7fb;--white:#fff;--green:#087443;--red:#b42318}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Arial, sans-serif}
+    header{background:#102a56;color:#fff;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    header strong{font-size:20px}header span{font-size:13px;color:#d9e5ff}
+    main{max-width:1180px;margin:28px auto;padding:0 16px}.panel{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 4px 18px rgba(16,42,86,.05)}
+    h1{font-size:24px;margin:0 0 6px}h2{font-size:18px;margin:0 0 14px}.muted{color:var(--muted)}
+    label{display:block;font-weight:600;margin:12px 0 6px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cfd6e2;border-radius:8px;font:inherit;background:#fff}button{border:0;border-radius:8px;padding:11px 16px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e9eef8;color:#19345f}button:disabled{opacity:.55;cursor:wait}
+    .login{max-width:420px;margin:55px auto}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.message{padding:11px 13px;border-radius:8px;margin:14px 0;background:#eef4ff;color:#173d7a;white-space:pre-wrap}.message.error{background:#fff0ef;color:var(--red)}
+    .toolbar{display:flex;gap:12px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin:18px 0}.toolbar .filter{max-width:300px}.stats{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.stat{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:135px}.stat b{display:block;font-size:22px}
+    .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;min-width:850px;background:#fff}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f7f9fc;font-size:13px;color:#526078}tr:last-child td{border-bottom:0}.id{font-family:monospace;font-size:12px;word-break:break-all;max-width:150px}.status{min-width:140px}.small{font-size:12px;color:var(--muted)}.empty{text-align:center;padding:28px;color:var(--muted)}
+    .details{margin-top:18px}.details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail{padding:12px;background:#f8faff;border-radius:8px;overflow-wrap:anywhere}.detail b{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+    @media(max-width:650px){header{align-items:flex-start;flex-direction:column}.panel{padding:16px}.details-grid{grid-template-columns:1fr}.login{margin:25px auto}}
+  </style>
+</head>
+<body>
+  <header><div><strong>KaajSathi</strong><br><span>Admin Dashboard</span></div><span id="sessionLabel">Secure admin access</span></header>
+  <main>
+    <section id="loginPanel" class="panel login">
+      <h1>Admin Login</h1><p class="muted">Sign in with your authorised KaajSathi admin account.</p>
+      <form id="loginForm">
+        <label for="email">Email address</label><input id="email" type="email" autocomplete="username" required />
+        <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required />
+        <button id="loginButton" type="submit" style="width:100%;margin-top:18px">Sign in</button>
+      </form>
+      <div id="loginMessage" class="message hidden" role="alert"></div>
+    </section>
+
+    <section id="dashboardPanel" class="panel hidden">
+      <div class="row"><div><h1>Booking Management</h1><p class="muted">View customer requests and update their status.</p></div><div style="flex:0 0 auto"><button id="refreshButton" class="secondary" type="button">Refresh</button> <button id="logoutButton" type="button">Sign out</button></div></div>
+      <div class="stats"><div class="stat"><span class="muted">Total bookings</span><b id="totalCount">0</b></div><div class="stat"><span class="muted">Pending</span><b id="pendingCount">0</b></div><div class="stat"><span class="muted">Completed</span><b id="completedCount">0</b></div></div>
+      <div class="toolbar"><div class="filter"><label for="statusFilter">Filter by status</label><select id="statusFilter"><option value="all">All bookings</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="assigned">Assigned</option><option value="in_progress">In progress</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></div><p id="loadInfo" class="small">Bookings are loaded from Supabase.</p></div>
+      <div id="dashboardMessage" class="message hidden" role="alert"></div>
+      <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Service</th><th>Area / Address</th><th>Created</th><th>Status</th><th>Action</th></tr></thead><tbody id="bookingRows"><tr><td colspan="7" class="empty">Loading bookings…</td></tr></tbody></table></div>
+      <section id="detailPanel" class="details hidden"><h2>Booking details</h2><div id="detailContent" class="details-grid"></div></section>
+    </section>
+  </main>
+<script>
+(() => {
+  // These are public frontend credentials. Never put a Supabase service-role key in this file.
+  const SUPABASE_URL = 'https://djjkxtybkpucdewhuxtv.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_G7l04_Fn3oHIp12dJN_3wQ_7--JCbFn';
+  const STATUS_OPTIONS = [
+    ['pending','Pending'],['confirmed','Confirmed'],['assigned','Assigned'],
+    ['in_progress','In progress'],['completed','Completed'],['cancelled','Cancelled']
+  ];
+  const $ = id => document.getElementById(id);
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  let bookings = [];
+  const showMessage = (id, message, isError=false) => { const el=$(id); el.textContent=message; el.classList.remove('hidden','error'); if(isError) el.classList.add('error'); };
+  const hideMessage = id => $(id).classList.add('hidden');
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const statusLabel = value => (STATUS_OPTIONS.find(x=>x[0]===value)?.[1] || value || 'Unknown');
+  const formatDate = value => value ? new Date(value).toLocaleString() : '—';
+
+  function setLoggedIn(isLoggedIn, email='') {
+    $('loginPanel').classList.toggle('hidden', isLoggedIn);
+    $('dashboardPanel').classList.toggle('hidden', !isLoggedIn);
+    $('sessionLabel').textContent = isLoggedIn ? `Signed in: ${email}` : 'Secure admin access';
+  }
+
+  async function loadBookings() {
+    hideMessage('dashboardMessage');
+    $('refreshButton').disabled = true;
+    $('loadInfo').textContent = 'Loading…';
+    const { data, error } = await client.from('bookings')
+      .select('id, customer_name, customer_phone, address, description, scheduled_at, status, created_at, service:services(name)')
+      .order('created_at', { ascending: false });
+    $('refreshButton').disabled = false;
+    if (error) {
+      $('loadInfo').textContent = 'Could not load bookings.';
+      showMessage('dashboardMessage', `Booking load failed: ${error.message}\n\nPlease check the admin RLS SELECT policy for public.bookings and the service relationship.`, true);
+      $('bookingRows').innerHTML = '<tr><td colspan="7" class="empty">Bookings could not be loaded.</td></tr>';
+      return;
+    }
+    bookings = data || [];
+    $('totalCount').textContent = bookings.length;
+    $('pendingCount').textContent = bookings.filter(b=>b.status==='pending').length;
+    $('completedCount').textContent = bookings.filter(b=>b.status==='completed').length;
+    $('loadInfo').textContent = `${bookings.length} booking(s) loaded`;
+    renderBookings();
+  }
+
+  function renderBookings() {
+    const filter = $('statusFilter').value;
+    const visible = bookings.filter(b=>filter==='all' || b.status===filter);
+    if (!visible.length) { $('bookingRows').innerHTML='<tr><td colspan="7" class="empty">No bookings found for this filter.</td></tr>'; return; }
+    $('bookingRows').innerHTML = visible.map(b => {
+      const options = STATUS_OPTIONS.map(([value,label])=>`<option value="${value}" ${b.status===value?'selected':''}>${label}</option>`).join('');
+      return `<tr>
+        <td><div class="id">${escapeHtml(b.id)}</div><button class="secondary" type="button" data-view="${escapeHtml(b.id)}" style="margin-top:7px;padding:6px 9px">View</button></td>
+        <td><b>${escapeHtml(b.customer_name || '—')}</b><br><span class="small">${escapeHtml(b.customer_phone || '—')}</span></td>
+        <td>${escapeHtml(b.service?.name || '—')}</td>
+        <td>${escapeHtml(b.address || '—')}</td>
+        <td>${escapeHtml(formatDate(b.created_at))}</td>
+        <td><select class="status" data-status="${escapeHtml(b.id)}" aria-label="Status for booking ${escapeHtml(b.id)}">${options}</select></td>
+        <td><button type="button" data-save="${escapeHtml(b.id)}">Save</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function showDetails(id) {
+    const b=bookings.find(x=>x.id===id); if(!b) return;
+    const fields=[['Booking ID',b.id],['Customer name',b.customer_name],['Mobile number',b.customer_phone],['Service',b.service?.name],['Address / area',b.address],['Preferred date & time',formatDate(b.scheduled_at)],['Current status',statusLabel(b.status)],['Request details',b.description],['Booking created',formatDate(b.created_at)]];
+    $('detailContent').innerHTML=fields.map(([label,value])=>`<div class="detail"><b>${escapeHtml(label)}</b>${escapeHtml(value || '—')}</div>`).join('');
+    $('detailPanel').classList.remove('hidden');
+    $('detailPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  async function updateStatus(id) {
+    const select=document.querySelector(`[data-status="${CSS.escape(id)}"]`);
+    if(!select) return;
+    const newStatus=select.value;
+    const button=document.querySelector(`[data-save="${CSS.escape(id)}"]`);
+    if(button) button.disabled=true;
+    const { error } = await client.from('bookings').update({status:newStatus}).eq('id',id);
+    if(button) button.disabled=false;
+    if(error) { showMessage('dashboardMessage',`Could not update booking status: ${error.message}\n\nPlease check the admin RLS UPDATE policy for public.bookings.`,true); return; }
+    showMessage('dashboardMessage',`Booking ${id} status updated to ${statusLabel(newStatus)}.`);
+    await loadBookings();
+  }
+
+  $('loginForm').addEventListener('submit', async event => {
+    event.preventDefault(); hideMessage('loginMessage');
+    $('loginButton').disabled=true; $('loginButton').textContent='Signing in…';
+    const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
+    $('loginButton').disabled=false; $('loginButton').textContent='Sign in';
+    if(error) { showMessage('loginMessage',`Login failed: ${error.message}`,true); return; }
+    setLoggedIn(true,data.user?.email || 'Admin');
+    await loadBookings();
+  });
+  $('logoutButton').addEventListener('click', async()=>{ await client.auth.signOut(); setLoggedIn(false); $('bookingRows').innerHTML=''; });
+  $('refreshButton').addEventListener('click',loadBookings);
+  $('statusFilter').addEventListener('change',renderBookings);
+  $('bookingRows').addEventListener('click',event=>{
+    const view=event.target.closest('[data-view]'); const save=event.target.closest('[data-save]');
+    if(view) showDetails(view.dataset.view);
+    if(save) updateStatus(save.dataset.save);
+  });
+  client.auth.onAuthStateChange((_event,session)=>{
+    if(session?.user) { setLoggedIn(true,session.user.email || 'Admin'); }
+    else setLoggedIn(false);
+  });
+  client.auth.getSession().then(async({data})=>{
+    if(data.session?.user) { setLoggedIn(true,data.session.user.email || 'Admin'); await loadBookings(); }
+    else setLoggedIn(false);
+  });
+})();
+</script>
+</body>
+</html>
