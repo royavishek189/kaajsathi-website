@@ -15,6 +15,7 @@
   <meta property="og:url" content="https://kaajsathi.in/">
   <meta property="og:locale" content="bn_IN">
   <meta name="twitter:card" content="summary">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -264,6 +265,9 @@
             <div class="field full"><label for="taskDetails" data-i18n="detailsLabel">কাজের বিস্তারিত (ঐচ্ছিক)</label><textarea id="taskDetails" name="details" data-i18n-placeholder="detailsPlaceholder" placeholder="কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন"></textarea></div>
           </div>
           <p class="form-note" data-i18n="formNote">গোপনীয়তা: এই ফর্মটি এখন আপনার browser-এই request summary তৈরি করে। কোনো তথ্য KaajSathi-তে পাঠানো বা server-এ সংরক্ষণ করা হয় না। Live booking চালুর আগে secure submission system যুক্ত করতে হবে।</p>
+          <div class="field full" style="margin: 14px 0;">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAF4m5qAbfUbMLjYJ" data-theme="auto"></div>
+          </div>
           <div class="form-actions"><button class="btn" type="submit" data-i18n="prepareButton">Request summary তৈরি করুন</button><button class="btn secondary" type="reset" data-i18n="clearButton">ফর্ম পরিষ্কার করুন</button></div>
           <div class="form-result" id="formResult" role="status" aria-live="polite"><strong id="resultHeading" data-i18n="summaryReady">আপনার অনুরোধ জমা হয়েছে</strong><pre id="summaryText"></pre><button class="btn green" type="button" id="copySummary" data-i18n="copyButton">Summary copy করুন</button></div>
         </form>
@@ -442,6 +446,15 @@
         return;
       }
 
+      const turnstileField = form.querySelector('[name="cf-turnstile-response"]');
+      const turnstileToken = turnstileField ? turnstileField.value.trim() : '';
+      if (!turnstileToken) {
+        result.classList.add('show');
+        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'CAPTCHA সম্পূর্ণ করুন' : 'Please complete CAPTCHA';
+        summary.textContent = currentLanguage === 'bn' ? 'অনুগ্রহ করে CAPTCHA যাচাই সম্পূর্ণ করে আবার submit করুন।' : 'Please complete the CAPTCHA verification and submit again.';
+        return;
+      }
+
       const descriptionParts = [];
       if (v.date) descriptionParts.push(`Preferred date: ${v.date}`);
       if (v.time) descriptionParts.push(`Preferred time: ${v.time}`);
@@ -451,6 +464,7 @@
         customer_phone: v.phone,
         service_id: serviceId,
         address: v.area,
+        turnstile_token: turnstileToken,
         description: descriptionParts.join('\n') || null,
         scheduled_at: null
       };
@@ -483,6 +497,7 @@
           : `Problem: ${error.message}\nPlease try again in a moment.`;
         result.classList.add('show');
       } finally {
+        if (window.turnstile && typeof window.turnstile.reset === 'function') window.turnstile.reset();
         submitButton.disabled = false;
         submitButton.textContent = originalButtonText;
       }
