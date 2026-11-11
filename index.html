@@ -265,7 +265,7 @@
           </div>
           <p class="form-note" data-i18n="formNote">গোপনীয়তা: এই ফর্মটি এখন আপনার browser-এই request summary তৈরি করে। কোনো তথ্য KaajSathi-তে পাঠানো বা server-এ সংরক্ষণ করা হয় না। Live booking চালুর আগে secure submission system যুক্ত করতে হবে।</p>
           <div class="form-actions"><button class="btn" type="submit" data-i18n="prepareButton">Request summary তৈরি করুন</button><button class="btn secondary" type="reset" data-i18n="clearButton">ফর্ম পরিষ্কার করুন</button></div>
-          <div class="form-result" id="formResult" role="status" aria-live="polite"><strong data-i18n="summaryReady">আপনার request summary তৈরি হয়েছে</strong><pre id="summaryText"></pre><button class="btn green" type="button" id="copySummary" data-i18n="copyButton">Summary copy করুন</button></div>
+          <div class="form-result" id="formResult" role="status" aria-live="polite"><strong id="resultHeading" data-i18n="summaryReady">আপনার অনুরোধ জমা হয়েছে</strong><pre id="summaryText"></pre><button class="btn green" type="button" id="copySummary" data-i18n="copyButton">Summary copy করুন</button></div>
         </form>
       </div>
     </section>
@@ -308,7 +308,7 @@
         servicesLabel:"আমাদের পরিষেবা", servicesTitle:"আপনার প্রয়োজন, আমাদের সহায়তা", servicesIntro:"দৈনন্দিন কাজ সহজ করতে বেছে নিন আপনার প্রয়োজনীয় সহায়তা। পরিষেবা ও availability এলাকা এবং কাজের ধরন অনুযায়ী নিশ্চিত করা হবে।", queueTitle:"লাইন / Queue সহায়তা", queueDesc:"অনুমোদিত ও নিয়মসম্মত কাজের জন্য লাইনে অপেক্ষা বা সংশ্লিষ্ট ছোটখাটো কাজে সহায়তার অনুরোধ জানান।", errandsTitle:"কেনাকাটা ও ছোটখাটো কাজ", errandsDesc:"দৈনন্দিন প্রয়োজনীয় জিনিস সংগ্রহ, pickup বা কাছাকাছি ছোট কাজের জন্য সহায়তা চান।", personalTitle:"ব্যক্তিগত সহায়তা", personalDesc:"আপনার প্রয়োজন সংক্ষেপে জানান। কাজের ধরন বুঝে উপযুক্ত স্থানীয় সহায়তার সম্ভাবনা নিয়ে আলোচনা হবে।", serviceRequest:"এই পরিষেবার অনুরোধ",
         howLabel:"কীভাবে কাজ করে", howTitle:"মাত্র তিনটি সহজ ধাপ", howIntro:"আপনার প্রয়োজন জানান, details নিয়ে কথা বলুন, তারপর পরিষেবা নিশ্চিত করুন।", step1Title:"আপনার প্রয়োজন জানান", step1Desc:"কী কাজ, কোন এলাকায় এবং কখন সাহায্য প্রয়োজন—তা আমাদের জানান।", step2Title:"বিস্তারিত নিশ্চিত করুন", step2Desc:"কাজের scope, availability এবং সম্ভাব্য খরচ নিয়ে আগে আলোচনা করুন।", step3Title:"তারপর পরিষেবা নিন", step3Desc:"সবকিছু পরিষ্কারভাবে নিশ্চিত হওয়ার পরই কাজের ব্যবস্থা করুন।",
         aboutLabel:"কেন KaajSathi", aboutTitle:"সহজ, স্বচ্ছ ও মানুষের কাছাকাছি", aboutIntro:"KaajSathi-র লক্ষ্য হলো স্থানীয় দৈনন্দিন কাজের জন্য সহায়তা খোঁজা ও যোগাযোগের প্রক্রিয়াকে সহজ করা।", why1Title:"স্থানীয় প্রয়োজনকে গুরুত্ব", why1Desc:"আপনার এলাকার প্রয়োজন ও কাজের ধরন বুঝে অনুরোধ নেওয়ার পরিকল্পনা।", why2Title:"আগে পরিষ্কার আলোচনা", why2Desc:"পরিষেবা, সময় ও সম্ভাব্য খরচ নিশ্চিত না করে booking final ধরা হবে না।", why3Title:"বাস্তবসম্মত প্রত্যাশা", why3Desc:"প্রতিটি অনুরোধের availability আলাদা করে নিশ্চিত করতে হবে; সব কাজ সব এলাকায় নাও পাওয়া যেতে পারে।", safetyNote:"গুরুত্বপূর্ণ: KaajSathi কোনো queue rule, সরকারি নিয়ম, restricted access বা আইন এড়িয়ে যাওয়ার পরিষেবা দেয় না। সব অনুরোধ সংশ্লিষ্ট নিয়ম মেনে বিবেচনা করা হবে।",
-        requestLabel:"অনুরোধ তৈরি করুন", requestTitle:"আপনার কাজের অনুরোধ তৈরি করুন", requestIntro:"নিচের তথ্য দিয়ে একটি request summary তৈরি করুন। এটি এখনো live booking নয়।", nameLabel:"আপনার নাম *", namePlaceholder:"আপনার নাম লিখুন", phoneLabel:"মোবাইল নম্বর *", phonePlaceholder:"যোগাযোগের নম্বর", serviceLabel:"কোন পরিষেবা প্রয়োজন? *", selectOption:"পরিষেবা বেছে নিন", otherOption:"অন্যান্য / আগে আলোচনা করতে চাই", areaLabel:"আপনার এলাকা *", areaPlaceholder:"এলাকা / শহরের নাম", dateLabel:"কবে প্রয়োজন? (ঐচ্ছিক)", timeLabel:"কোন সময়ে? (ঐচ্ছিক)", timeAny:"যেকোনো সময় / এখনও নিশ্চিত নই", morning:"সকাল", afternoon:"দুপুর", evening:"বিকেল / সন্ধ্যা", detailsLabel:"কাজের বিস্তারিত (ঐচ্ছিক)", detailsPlaceholder:"কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন", formNote:"গোপনীয়তা: এই ফর্মটি এখন আপনার browser-এই request summary তৈরি করে। কোনো তথ্য KaajSathi-তে পাঠানো বা server-এ সংরক্ষণ করা হয় না। Live booking চালুর আগে secure submission system যুক্ত করতে হবে।", prepareButton:"Request summary তৈরি করুন", clearButton:"ফর্ম পরিষ্কার করুন", summaryReady:"আপনার request summary তৈরি হয়েছে", copyButton:"Summary copy করুন", copied:"Request summary copy হয়েছে।", copyFail:"Copy করা যায়নি। Summary-টি select করে copy করুন।", missingFields:"অনুগ্রহ করে প্রয়োজনীয় ঘরগুলি পূরণ করুন।", formSummaryTitle:"KaajSathi request summary", summaryName:"নাম", summaryPhone:"মোবাইল", summaryService:"পরিষেবা", summaryArea:"এলাকা", summaryDate:"তারিখ", summaryTime:"সময়", summaryDetails:"বিস্তারিত", dateNone:"নির্ধারিত নয়", detailsNone:"দেওয়া হয়নি",
+        requestLabel:"অনুরোধ তৈরি করুন", requestTitle:"আপনার কাজের অনুরোধ তৈরি করুন", requestIntro:"নিচের তথ্য দিয়ে একটি request summary তৈরি করুন। এটি এখনো live booking নয়।", nameLabel:"আপনার নাম *", namePlaceholder:"আপনার নাম লিখুন", phoneLabel:"মোবাইল নম্বর *", phonePlaceholder:"যোগাযোগের নম্বর", serviceLabel:"কোন পরিষেবা প্রয়োজন? *", selectOption:"পরিষেবা বেছে নিন", otherOption:"অন্যান্য / আগে আলোচনা করতে চাই", areaLabel:"আপনার এলাকা *", areaPlaceholder:"এলাকা / শহরের নাম", dateLabel:"কবে প্রয়োজন? (ঐচ্ছিক)", timeLabel:"কোন সময়ে? (ঐচ্ছিক)", timeAny:"যেকোনো সময় / এখনও নিশ্চিত নই", morning:"সকাল", afternoon:"দুপুর", evening:"বিকেল / সন্ধ্যা", detailsLabel:"কাজের বিস্তারিত (ঐচ্ছিক)", detailsPlaceholder:"কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন", formNote:"গোপনীয়তা: এই ফর্মটি এখন আপনার browser-এই request summary তৈরি করে। কোনো তথ্য KaajSathi-তে পাঠানো বা server-এ সংরক্ষণ করা হয় না। Live booking চালুর আগে secure submission system যুক্ত করতে হবে।", prepareButton:"অনুরোধ জমা দিন", clearButton:"ফর্ম পরিষ্কার করুন", summaryReady:"আপনার অনুরোধ জমা হয়েছে", copyButton:"Summary copy করুন", copied:"Request summary copy হয়েছে।", copyFail:"Copy করা যায়নি। Summary-টি select করে copy করুন।", missingFields:"অনুগ্রহ করে প্রয়োজনীয় ঘরগুলি পূরণ করুন।", formSummaryTitle:"KaajSathi request summary", summaryName:"নাম", summaryPhone:"মোবাইল", summaryService:"পরিষেবা", summaryArea:"এলাকা", summaryDate:"তারিখ", summaryTime:"সময়", summaryDetails:"বিস্তারিত", dateNone:"নির্ধারিত নয়", detailsNone:"দেওয়া হয়নি",
         faqLabel:"সাহায্য ও তথ্য", faqTitle:"সাধারণ কিছু প্রশ্ন", faqIntro:"KaajSathi সম্পর্কে জানার জন্য কয়েকটি প্রয়োজনীয় তথ্য।", faqQ1:"KaajSathi কোন কোন এলাকায় পরিষেবা দেয়?", faqA1:"পরিষেবার এলাকা ধাপে ধাপে নির্ধারিত হবে। অনুরোধ জানানোর পর আপনার এলাকার availability নিশ্চিত করতে হবে।", faqQ2:"পরিষেবার দাম কত?", faqA2:"কাজের ধরন, সময় ও এলাকার উপর খরচ নির্ভর করতে পারে। কাজ নিশ্চিত করার আগে সম্ভাব্য খরচ আলোচনা করা উচিত।", faqQ3:"ফর্ম submit করলে কি booking confirm হবে?", faqA3:"না। এই মুহূর্তে ফর্মটি শুধু request summary তৈরি করে। এটি কোনো booking পাঠায় না বা confirmation দেয় না।", faqQ4:"Queue assistance কি যেকোনো জায়গায় পাওয়া যাবে?", faqA4:"না। সংশ্লিষ্ট প্রতিষ্ঠান বা কর্তৃপক্ষের নিয়ম মেনে, যেখানে অনুমতি আছে কেবল সেখানেই সহায়তার অনুরোধ বিবেচনা করা হবে।",
         ctaTitle:"আপনার কাজ সহজ করার যাত্রায় KaajSathi", ctaText:"আপনার প্রয়োজন লিখে রাখুন—পরিষেবা চালু ও যোগাযোগের ব্যবস্থা যুক্ত হলে পরবর্তী ধাপ নেওয়া যাবে।", ctaButton:"অনুরোধ তৈরি করুন", footerDesc:"আপনার কাজের পাশে। দৈনন্দিন স্থানীয় সহায়তা খোঁজার একটি সহজ উদ্যোগ।", footerExplore:"ঘুরে দেখুন", footerHelp:"সাহায্য", rights:"সর্বস্বত্ব সংরক্ষিত।", footerTag:"আপনার কাজের পাশে · Your Work Companion", menuOpen:"মেনু খুলুন", menuClose:"মেনু বন্ধ করুন", docTitle:"KaajSathi — আপনার কাজের পাশে | Local Assistance", metaDescription:"KaajSathi connects you with local assistance for queue support, shopping, errands and everyday personal tasks. আপনার দৈনন্দিন কাজে স্থানীয় সহায়তা পান।"
       },
@@ -320,7 +320,7 @@
         servicesLabel:"WHAT WE HELP WITH", servicesTitle:"The help you need, close to home", servicesIntro:"Choose the assistance you need for everyday tasks. Service availability will be confirmed based on your area and the nature of the task.", queueTitle:"Queue assistance", queueDesc:"Request help with waiting in line or related small tasks where the activity is permitted and follows the applicable rules.", errandsTitle:"Shopping and small errands", errandsDesc:"Get help with everyday item collection, pickups or small nearby errands.", personalTitle:"Personal assistance", personalDesc:"Tell us what you need. We will discuss whether suitable local assistance may be available for the task.", serviceRequest:"Request this service",
         howLabel:"HOW IT WORKS", howTitle:"Three simple steps", howIntro:"Share what you need, discuss the details, and confirm the service before proceeding.", step1Title:"Tell us what you need", step1Desc:"Share the task, your area and when you need assistance.", step2Title:"Confirm the details", step2Desc:"Discuss the scope, availability and expected cost in advance.", step3Title:"Proceed with the service", step3Desc:"Make arrangements only after the details have been clearly confirmed.",
         aboutLabel:"WHY KAAJSATHI", aboutTitle:"Simple, transparent and people-first", aboutIntro:"KaajSathi aims to make it easier to find and coordinate local help for everyday tasks.", why1Title:"Local needs matter", why1Desc:"Requests are intended to be considered with the local area and nature of the task in mind.", why2Title:"Clear discussion first", why2Desc:"A booking should not be treated as final until the service, timing and expected cost are confirmed.", why3Title:"Realistic expectations", why3Desc:"Availability must be confirmed for each request; not every task may be available in every area.", safetyNote:"Important: KaajSathi does not provide services to bypass queue rules, government procedures, restricted access or the law. All requests are considered subject to applicable rules.",
-        requestLabel:"MAKE AN ENQUIRY", requestTitle:"Prepare your service request", requestIntro:"Use the form below to create a request summary. This is not a live booking yet.", nameLabel:"Your name *", namePlaceholder:"Enter your name", phoneLabel:"Mobile number *", phonePlaceholder:"Your contact number", serviceLabel:"Which service do you need? *", selectOption:"Choose a service", otherOption:"Other / discuss first", areaLabel:"Your area *", areaPlaceholder:"Area / city name", dateLabel:"When do you need it? (Optional)", timeLabel:"Preferred time (Optional)", timeAny:"Any time / Not sure yet", morning:"Morning", afternoon:"Afternoon", evening:"Afternoon / Evening", detailsLabel:"Task details (Optional)", detailsPlaceholder:"Briefly describe the help you need", formNote:"Privacy: This form currently creates a request summary in your browser only. No information is sent to KaajSathi or stored on a server. A secure submission system must be added before live booking is enabled.", prepareButton:"Create request summary", clearButton:"Clear form", summaryReady:"Your request summary is ready", copyButton:"Copy summary", copied:"Request summary copied.", copyFail:"Could not copy automatically. Select and copy the summary manually.", missingFields:"Please complete the required fields.", formSummaryTitle:"KaajSathi request summary", summaryName:"Name", summaryPhone:"Mobile", summaryService:"Service", summaryArea:"Area", summaryDate:"Date", summaryTime:"Time", summaryDetails:"Details", dateNone:"Not specified", detailsNone:"Not provided",
+        requestLabel:"MAKE AN ENQUIRY", requestTitle:"Prepare your service request", requestIntro:"Submit your details to send a service request to KaajSathi. This is not a booking confirmation; our team will contact you.", nameLabel:"Your name *", namePlaceholder:"Enter your name", phoneLabel:"Mobile number *", phonePlaceholder:"Your contact number", serviceLabel:"Which service do you need? *", selectOption:"Choose a service", otherOption:"Other / discuss first", areaLabel:"Your area *", areaPlaceholder:"Area / city name", dateLabel:"When do you need it? (Optional)", timeLabel:"Preferred time (Optional)", timeAny:"Any time / Not sure yet", morning:"Morning", afternoon:"Afternoon", evening:"Afternoon / Evening", detailsLabel:"Task details (Optional)", detailsPlaceholder:"Briefly describe the help you need", formNote:"Your details will be submitted as a service request. Submission does not confirm service; the KaajSathi team will contact you to confirm availability and cost.", prepareButton:"Submit request", clearButton:"Clear form", summaryReady:"Your request has been submitted", copyButton:"Copy summary", copied:"Request summary copied.", copyFail:"Could not copy automatically. Select and copy the summary manually.", missingFields:"Please complete the required fields.", formSummaryTitle:"KaajSathi request summary", summaryName:"Name", summaryPhone:"Mobile", summaryService:"Service", summaryArea:"Area", summaryDate:"Date", summaryTime:"Time", summaryDetails:"Details", dateNone:"Not specified", detailsNone:"Not provided",
         faqLabel:"HELP & INFORMATION", faqTitle:"Frequently asked questions", faqIntro:"A few useful things to know about KaajSathi.", faqQ1:"Which areas does KaajSathi serve?", faqA1:"Service areas will be introduced in stages. Availability for your area must be confirmed after you make an enquiry.", faqQ2:"How much does a service cost?", faqA2:"Costs may depend on the task, timing and area. Discuss the expected cost before confirming any service.", faqQ3:"Will submitting the form confirm my booking?", faqA3:"No. The form currently creates a request summary only. It does not send a booking or provide a confirmation.", faqQ4:"Is queue assistance available everywhere?", faqA4:"No. Requests will only be considered where assistance is permitted by the relevant organisation or authority and follows its rules.",
         ctaTitle:"Make everyday tasks easier with KaajSathi", ctaText:"Prepare your request now. The next step will be available once service operations and an official contact channel are in place.", ctaButton:"Prepare a request", footerDesc:"Your work companion. A simple initiative to help people find local assistance for everyday tasks.", footerExplore:"Explore", footerHelp:"Help", rights:"All rights reserved.", footerTag:"Your Work Companion · আপনার কাজের পাশে", menuOpen:"Open menu", menuClose:"Close menu", docTitle:"KaajSathi — Your Work Companion | Local Assistance", metaDescription:"KaajSathi connects you with local assistance for queue support, shopping, errands and everyday personal tasks."
       }
@@ -369,38 +369,125 @@
       menuButton.textContent = '☰';
     }));
 
+    // Supabase public frontend configuration. Replace both placeholders before publishing.
+    const SUPABASE_URL = 'https://djjkxtybkpucdewhuxtv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_G7l04_Fn3oHIp12dJN_3wQ_7--JCbFn';
+    const CREATE_BOOKING_URL = `${SUPABASE_URL.replace(/\/$/, '')}/functions/v1/create-booking`;
+
     const form = document.getElementById('requestForm');
     const result = document.getElementById('formResult');
     const summary = document.getElementById('summaryText');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const serviceIds = {};
+    const serviceCategoryForOption = { queue: 'queue', errands: 'errands', personal: 'personal', other: 'other' };
+    const serviceNameForOption = { queue: 'Queue assistance', errands: 'Shopping and small errands', personal: 'Personal assistance', other: 'Other / discuss first' };
+
     const values = () => ({
       name: document.getElementById('customerName').value.trim(),
       phone: document.getElementById('customerPhone').value.trim(),
+      serviceKey: document.getElementById('serviceType').value,
       service: document.getElementById('serviceType').selectedOptions[0]?.textContent || '',
       area: document.getElementById('customerArea').value.trim(),
       date: document.getElementById('preferredDate').value,
-      time: document.getElementById('preferredTime').selectedOptions[0]?.textContent || '',
+      time: document.getElementById('preferredTime').value,
       details: document.getElementById('taskDetails').value.trim()
     });
-    form.addEventListener('submit', event => {
+
+    async function loadActiveServices() {
+      if (SUPABASE_URL.includes('PASTE_') || SUPABASE_ANON_KEY.includes('PASTE_')) return;
+      const url = `${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/services?select=id,name,category&is_active=eq.true`;
+      const response = await fetch(url, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } });
+      if (!response.ok) throw new Error('Could not load available services');
+      const rows = await response.json();
+      rows.forEach(row => {
+        const category = String(row.category || '').toLowerCase();
+        if (category && !serviceIds[category]) serviceIds[category] = row.id;
+      });
+      // Fallback to matching service names if category labels differ.
+      rows.forEach(row => {
+        const name = String(row.name || '').toLowerCase();
+        if (!serviceIds.queue && name.includes('queue')) serviceIds.queue = row.id;
+        if (!serviceIds.errands && (name.includes('errand') || name.includes('shopping'))) serviceIds.errands = row.id;
+        if (!serviceIds.personal && name.includes('personal')) serviceIds.personal = row.id;
+        if (!serviceIds.other && name.includes('other')) serviceIds.other = row.id;
+      });
+    }
+
+    loadActiveServices().catch(error => console.error('KaajSathi service loading:', error));
+
+    form.addEventListener('submit', async event => {
       event.preventDefault();
       if (!form.reportValidity()) return;
       const v = values();
       const t = translations[currentLanguage];
-      const lines = [
-        t.formSummaryTitle,
-        `${t.summaryName}: ${v.name}`,
-        `${t.summaryPhone}: ${v.phone}`,
-        `${t.summaryService}: ${v.service}`,
-        `${t.summaryArea}: ${v.area}`,
-        `${t.summaryDate}: ${v.date || t.dateNone}`,
-        `${t.summaryTime}: ${v.time || t.dateNone}`,
-        `${t.summaryDetails}: ${v.details || t.detailsNone}`
-      ];
-      summary.textContent = lines.join('\n');
-      result.classList.add('show');
-      result.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+      if (SUPABASE_URL.includes('PASTE_') || SUPABASE_ANON_KEY.includes('PASTE_')) {
+        result.classList.add('show');
+        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'Backend configuration বাকি' : 'Backend configuration is incomplete';
+        summary.textContent = currentLanguage === 'bn' ? 'Website code-এ Supabase Project URL এবং Publishable Key বসানো হয়নি।' : 'The Supabase Project URL and Publishable Key have not been added to the website configuration.';
+        return;
+      }
+      try {
+        await loadActiveServices();
+      } catch (serviceLoadError) {
+        result.classList.add('show');
+        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'পরিষেবার তালিকা লোড হয়নি' : 'Could not load the service list';
+        summary.textContent = serviceLoadError.message;
+        return;
+      }
+      const serviceId = serviceIds[serviceCategoryForOption[v.serviceKey]];
+      if (!serviceId) {
+        result.classList.add('show');
+        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'পরিষেবাটি এখনো প্রস্তুত নয়' : 'This service is not configured yet';
+        summary.textContent = currentLanguage === 'bn' ? 'Supabase services table-এ এই পরিষেবাটি active আছে কি না পরীক্ষা করুন।' : 'Please check that this service exists and is active in the Supabase services table.';
+        return;
+      }
+
+      const descriptionParts = [];
+      if (v.date) descriptionParts.push(`Preferred date: ${v.date}`);
+      if (v.time) descriptionParts.push(`Preferred time: ${v.time}`);
+      if (v.details) descriptionParts.push(v.details);
+      const payload = {
+        customer_name: v.name,
+        customer_phone: v.phone,
+        service_id: serviceId,
+        address: v.area,
+        description: descriptionParts.join('\n') || null,
+        scheduled_at: null
+      };
+
+      submitButton.disabled = true;
+      const originalButtonText = submitButton.textContent;
+      submitButton.textContent = currentLanguage === 'bn' ? 'জমা হচ্ছে...' : 'Submitting...';
+      result.classList.remove('show');
+      try {
+        const response = await fetch(CREATE_BOOKING_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) throw new Error(data.error || `Request failed (${response.status})`);
+        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'আপনার অনুরোধ সফলভাবে জমা হয়েছে!' : 'Your request was submitted successfully!';
+        summary.textContent = `${currentLanguage === 'bn' ? 'Booking ID' : 'Booking ID'}: ${data.booking_id}\n${currentLanguage === 'bn' ? 'পরিষেবা' : 'Service'}: ${v.service}\n${currentLanguage === 'bn' ? 'এলাকা' : 'Area'}: ${v.area}\n${currentLanguage === 'bn' ? 'আমাদের team আপনার সঙ্গে যোগাযোগ করবে।' : 'Our team will contact you.'}`;
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (error) {
+        console.error('KaajSathi booking submission:', error);
+        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'অনুরোধ জমা হয়নি' : 'Request could not be submitted';
+        summary.textContent = currentLanguage === 'bn'
+          ? `সমস্যা: ${error.message}\nদয়া করে কিছুক্ষণ পরে আবার চেষ্টা করুন।`
+          : `Problem: ${error.message}\nPlease try again in a moment.`;
+        result.classList.add('show');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+      }
     });
-    form.addEventListener('reset', () => { result.classList.remove('show'); summary.textContent = ''; });
+    form.addEventListener('reset', () => { result.classList.remove('show'); summary.textContent = ''; document.getElementById('resultHeading').textContent = translations[currentLanguage].summaryReady; });
     document.getElementById('copySummary').addEventListener('click', async () => {
       const t = translations[currentLanguage];
       const text = summary.textContent;
