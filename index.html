@@ -167,6 +167,8 @@
         <a href="#how" data-i18n="navHow">যেভাবে কাজ করে</a>
         <a href="#about" data-i18n="navAbout">আমাদের সম্পর্কে</a>
         <a href="#faq" data-i18n="navFaq">প্রশ্নোত্তর</a>
+      <a href="track-booking.html">Track Booking</a>
+        <a href="track-booking.html">Track Booking</a>
       </nav>
       <div class="nav-actions">
         <div class="lang-switch" role="group" aria-label="Choose language">
@@ -485,10 +487,12 @@
         });
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data.success) throw new Error(data.error || `Request failed (${response.status})`);
-        document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'আপনার অনুরোধ সফলভাবে জমা হয়েছে!' : 'Your request was submitted successfully!';
-        summary.textContent = `${currentLanguage === 'bn' ? 'Booking ID' : 'Booking ID'}: ${data.booking_id}\n${currentLanguage === 'bn' ? 'পরিষেবা' : 'Service'}: ${v.service}\n${currentLanguage === 'bn' ? 'এলাকা' : 'Area'}: ${v.area}\n${currentLanguage === 'bn' ? 'আমাদের team আপনার সঙ্গে যোগাযোগ করবে।' : 'Our team will contact you.'}`;
-        result.classList.add('show');
-        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Booking is saved successfully. Show a dedicated confirmation page.
+        const confirmationUrl = new URL('confirmation.html', window.location.href);
+        confirmationUrl.searchParams.set('booking_id', data.booking_id);
+        confirmationUrl.searchParams.set('service', v.service);
+        confirmationUrl.searchParams.set('area', v.area);
+        window.location.assign(confirmationUrl.toString());
       } catch (error) {
         console.error('KaajSathi booking submission:', error);
         document.getElementById('resultHeading').textContent = currentLanguage === 'bn' ? 'অনুরোধ জমা হয়নি' : 'Request could not be submitted';
