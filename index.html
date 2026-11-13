@@ -128,6 +128,7 @@
     .request-card { max-width: 850px; margin: 0 auto; padding: 32px; background: #fff; border: 1px solid var(--line); border-radius: 25px; box-shadow: var(--shadow); }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; }
     .field { display: flex; flex-direction: column; gap: 7px; }
+    .field[hidden] { display: none !important; }
     .field.full { grid-column: 1 / -1; }
     label { color: #314B5D; font-size: 13px; font-weight: 800; }
     input, select, textarea { width: 100%; padding: 13px 14px; border: 1px solid #D7E2E9; border-radius: 12px; background: #FBFDFE; color: var(--ink); outline: none; }
@@ -256,19 +257,6 @@
           <article class="service-card"><div class="service-icon">🧑‍💼</div><h3 data-i18n="priceErrandTitle">Personal Errand</h3><p data-i18n="priceErrandDesc">প্রথম ১ ঘণ্টা ₹59 থেকে; অতিরিক্ত প্রতি ৩০ মিনিট ₹30। নির্বাচিত এলাকার যাতায়াত এই charge-এর মধ্যেই অন্তর্ভুক্ত।</p></article>
           <article class="service-card"><div class="service-icon">💬</div><h3 data-i18n="priceCustomTitle">Other / Custom Request</h3><p data-i18n="priceCustomDesc">কাজের বিবরণ দেখে KaajSathi team একটিই মোট service charge জানাবে। আপনার সম্মতি ছাড়া কাজ শুরু হবে না।</p></article>
         </div>
-        <div class="table-wrap" style="overflow-x:auto;margin-top:18px;">
-          <table style="width:100%;border-collapse:collapse;min-width:560px;background:var(--surface,#fff);border-radius:12px;overflow:hidden;">
-            <caption style="text-align:left;padding:10px;font-weight:700;" data-i18n="areaRateCaption">এলাকা অনুযায়ী প্রথম ঘণ্টার service charge (যাতায়াতসহ)</caption>
-            <thead><tr><th style="padding:10px;text-align:left;" data-i18n="areaRateArea">এলাকা</th><th style="padding:10px;" data-i18n="areaRateShop">Shopping / Pickup</th><th style="padding:10px;" data-i18n="areaRateHourly">Senior / Queue</th><th style="padding:10px;" data-i18n="areaRateErrand">Personal Errand</th></tr></thead>
-            <tbody>
-              <tr><td style="padding:10px;">Dankuni</td><td style="padding:10px;text-align:center;">₹39</td><td style="padding:10px;text-align:center;">₹79</td><td style="padding:10px;text-align:center;">₹59</td></tr>
-              <tr><td style="padding:10px;">Chanditala</td><td style="padding:10px;text-align:center;">₹49</td><td style="padding:10px;text-align:center;">₹89</td><td style="padding:10px;text-align:center;">₹69</td></tr>
-              <tr><td style="padding:10px;">Hindmotor</td><td style="padding:10px;text-align:center;">₹59</td><td style="padding:10px;text-align:center;">₹99</td><td style="padding:10px;text-align:center;">₹79</td></tr>
-              <tr><td style="padding:10px;">Uttarpara</td><td style="padding:10px;text-align:center;">₹59</td><td style="padding:10px;text-align:center;">₹99</td><td style="padding:10px;text-align:center;">₹79</td></tr>
-              <tr><td style="padding:10px;">Serampore</td><td style="padding:10px;text-align:center;">₹69</td><td style="padding:10px;text-align:center;">₹109</td><td style="padding:10px;text-align:center;">₹89</td></tr>
-            </tbody>
-          </table>
-        </div>
         <div class="notice-band" style="margin-top:22px;" data-i18n="pricingNote">দেখানো service charge-এর মধ্যেই সাধারণ bike travel অন্তর্ভুক্ত। Shopping-এর পণ্যের আসল bill আলাদা। Toll, parking বা অন্য third-party খরচ থাকলে আগে জানিয়ে সম্মতি নেওয়া হবে।</div>
       </div>
     </section>
@@ -310,7 +298,7 @@
             <div class="field"><label for="preferredTime" data-i18n="timeLabel">কোন সময়ে? (ঐচ্ছিক)</label><select id="preferredTime" name="time"><option value="" data-i18n="timeAny">যেকোনো সময় / এখনও নিশ্চিত নই</option><option value="Morning" data-i18n="morning">সকাল</option><option value="Afternoon" data-i18n="afternoon">দুপুর</option><option value="Evening" data-i18n="evening">বিকেল / সন্ধ্যা</option></select></div>
             <div class="field full"><label for="taskDetails" data-i18n="detailsLabel">কাজের বিস্তারিত (ঐচ্ছিক)</label><textarea id="taskDetails" name="details" data-i18n-placeholder="detailsPlaceholder" placeholder="কী ধরনের সাহায্য দরকার, সংক্ষেপে লিখুন"></textarea></div>
             <div class="field" id="durationField" hidden><label for="serviceDuration">কতক্ষণ সহায়তা প্রয়োজন? / Required duration</label><select id="serviceDuration" name="duration"><option value="1">১ ঘণ্টা / 1 hour</option><option value="1.5">১.৫ ঘণ্টা / 1.5 hours</option><option value="2">২ ঘণ্টা / 2 hours</option><option value="2.5">২.৫ ঘণ্টা / 2.5 hours</option><option value="3">৩ ঘণ্টা / 3 hours</option><option value="4">৪ ঘণ্টা / 4 hours</option></select></div>
-            <div class="field full" id="estimatePanel" style="padding:14px;border:1px solid #D7E2E9;border-radius:12px;background:#F4F8FB;" aria-live="polite"><strong>আনুমানিক service charge / Indicative service charge</strong><p id="estimateText" style="margin:6px 0 0;">পরিষেবা ও এলাকা বেছে নিলে আনুমানিক চার্জ এখানে দেখা যাবে। / Select a service and area to see the indicative charge.</p><small>এটি আনুমানিক মোট service charge; সাধারণ bike যাতায়াত অন্তর্ভুক্ত। Team কাজের বিবরণ ও availability যাচাই করে final charge নিশ্চিত করবে। Shopping-এর পণ্যের bill আলাদা।</small></div>
+            <div class="field full" id="estimatePanel" hidden style="padding:14px;border:1px solid #D7E2E9;border-radius:12px;background:#F4F8FB;" aria-live="polite"><strong>আনুমানিক service charge / Indicative service charge</strong><p id="estimateText" style="margin:6px 0 0;">পরিষেবা ও এলাকা বেছে নিলে আনুমানিক চার্জ এখানে দেখা যাবে। / Select a service and area to see the indicative charge.</p><small>এটি আনুমানিক মোট service charge; সাধারণ bike যাতায়াত অন্তর্ভুক্ত। Team কাজের বিবরণ ও availability যাচাই করে final charge নিশ্চিত করবে। Shopping-এর পণ্যের bill আলাদা।</small></div>
           </div>
           <p class="form-note" data-i18n="formNote">আপনার request নিরাপদভাবে জমা হবে। Request submit করলেই service confirmed হবে না—availability, কাজের details ও সম্ভাব্য খরচ নিশ্চিত করতে KaajSathi team আপনার সঙ্গে ফোনে যোগাযোগ করবে।</p>
           <div class="field full" style="margin: 14px 0;">
@@ -438,6 +426,7 @@
     const durationField = document.getElementById('durationField');
     const durationSelect = document.getElementById('serviceDuration');
     const estimateText = document.getElementById('estimateText');
+    const estimatePanel = document.getElementById('estimatePanel');
     const areaPricing = {
       Dankuni: { shopping:39, pickup_drop:39, senior:79, queue:79, personal_errand:59 },
       Chanditala: { shopping:49, pickup_drop:49, senior:89, queue:89, personal_errand:69 },
@@ -450,6 +439,7 @@
       const area = document.getElementById('customerArea').value;
       const hourly = ['senior','queue','personal_errand'].includes(key);
       durationField.hidden = !hourly;
+      estimatePanel.hidden = !(key && area);
       if (!key || !area) {
         estimateText.textContent = currentLanguage === 'bn' ? 'পরিষেবা ও এলাকা বেছে নিলে যাতায়াতসহ মোট আনুমানিক service charge এখানে দেখা যাবে।' : 'Select a service and area to see the estimated total service charge, including travel.';
         return;
